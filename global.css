@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #1e1a2d;
+    --primary: #594efc;
+    --primary-foreground: #dee3ff;
+    --secondary: #615884;
+    --tertiary: #262138;
+    --muted: #4f4671;
+    --border: #4a4169;
+    --input: #262138;
+    --sans: "InriaSansRegular";
+    --bold: "InriaSansBold";
+    --italic: "InriaSansItalic";
+  }
+
+  .dark:root {
+    --background: #1e1a2d;
+    --foreground: #e5e6ef;
+    --primary: #594efc;
+    --primary-foreground: #dee3ff;
+    --secondary: #352f5e;
+    --tertiary: #262138;
+    --muted: #4f4671;
+    --border: #4a4169;
+    --input: #262138;
+    --sans: "InriaSansRegular";
+    --bold: "InriaSansBold";
+    --italic: "InriaSansItalic";
+  }
+}
