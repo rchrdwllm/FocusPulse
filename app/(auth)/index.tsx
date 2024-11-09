@@ -7,11 +7,11 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
-import { H1 } from "@/components/Typography";
-import { Input } from "@/components/Input";
-import { Button } from "@/components/Button";
-import { Text } from "@/components/Text";
+import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import { H1 } from "@/components/ui/typography";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { Link, router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -22,7 +22,7 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import { login } from "@/server/actions";
 
 const loginBg = require("@/assets/images/login-bg.png");
@@ -55,7 +55,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (loginError) {
-      Alert.alert(loginError);
+      Alert.alert("Error while logging in", loginError, [
+        {
+          text: "Okay",
+          onPress: () => setLoginError(null),
+        },
+      ]);
     }
   }, [loginError]);
 
@@ -87,7 +92,6 @@ const LoginScreen = () => {
                     name="email"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        className="rounded-xl"
                         placeholder="Email"
                         onChangeText={onChange}
                         onBlur={onBlur}
@@ -111,7 +115,6 @@ const LoginScreen = () => {
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
                         placeholder="Password"
-                        className="rounded-xl"
                         onChangeText={onChange}
                         onBlur={onBlur}
                         value={value}

@@ -4,15 +4,16 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
+    --background: #f8f7fd;
     --foreground: #1e1a2d;
     --primary: #594efc;
     --primary-foreground: #dee3ff;
-    --secondary: #615884;
-    --tertiary: #262138;
-    --muted: #4f4671;
-    --border: #4a4169;
-    --input: #262138;
+    --secondary: #ffffff;
+    --tertiary: #ece8fa;
+    --muted: #8178a1;
+    --border: #d9d5e7;
+    --input: #eeedf8;
+    --destructive: "#9f1239"
     --sans: "InriaSansRegular";
     --bold: "InriaSansBold";
     --italic: "InriaSansItalic";
@@ -23,11 +24,12 @@
     --foreground: #e5e6ef;
     --primary: #594efc;
     --primary-foreground: #dee3ff;
-    --secondary: #352f5e;
+    --secondary: #2c2848;
     --tertiary: #262138;
-    --muted: #4f4671;
-    --border: #4a4169;
+    --muted: #675e86;
+    --border: #3b3453;
     --input: #262138;
+    --destructive: "#be123c"
     --sans: "InriaSansRegular";
     --bold: "InriaSansBold";
     --italic: "InriaSansItalic";

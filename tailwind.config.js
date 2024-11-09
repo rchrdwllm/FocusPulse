@@ -23,6 +23,7 @@ module.exports = {
           DEFAULT: "var(--accent)",
           foreground: "var(--accent-foreground)",
         },
+        destructive: "var(--destructive)",
       },
       borderWidth: {
         hairline: hairlineWidth(),

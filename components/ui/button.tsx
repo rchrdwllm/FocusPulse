@@ -1,11 +1,13 @@
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Pressable } from "react-native";
-import { TextClassContext } from "./Text";
+import { TextClassContext } from "./text";
 import { cn } from "@/lib/utils";
+import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
+import { buttonSpring } from "@/constants/spring";
 
 const buttonVariants = cva(
-  "group flex items-center justify-center rounded-xl web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0",
+  "group flex items-center justify-center rounded-full web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0",
   {
     variants: {
       variant: {
@@ -62,8 +64,20 @@ const buttonTextVariants = cva(
 type ButtonProps = ComponentPropsWithoutRef<typeof Pressable> &
   VariantProps<typeof buttonVariants>;
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 const Button = forwardRef<ElementRef<typeof Pressable>, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
+    const scale = useSharedValue(1);
+
+    const handlePressIn = () => {
+      scale.value = withSpring(0.95, buttonSpring);
+    };
+
+    const handlePressOut = () => {
+      scale.value = withSpring(1, buttonSpring);
+    };
+
     return (
       <TextClassContext.Provider
         value={buttonTextVariants({
@@ -72,13 +86,18 @@ const Button = forwardRef<ElementRef<typeof Pressable>, ButtonProps>(
           className: "web:pointer-events-none",
         })}
       >
-        <Pressable
+        <AnimatedPressable
           className={cn(
             props.disabled && "opacity-50 web:pointer-events-none",
             buttonVariants({ variant, size, className })
           )}
+          style={{
+            transform: [{ scale }],
+          }}
           ref={ref}
           role="button"
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
           {...props}
         />
       </TextClassContext.Provider>

@@ -1,33 +1,18 @@
-import { H1 } from "@/components/Typography";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import CountdownTimer from "@/components/countdown-timer/countdown-timer";
+import { Input } from "@/components/ui/input";
 import { View } from "react-native";
-import { colors } from "@/constants/colors";
+import { Text } from "@/components/ui/text";
 
 const HomeScreen = () => {
   return (
     <SafeAreaWrapper className="bg-background px-4">
-      <View className="flex-1 justify-center items-center">
-        <CountdownCircleTimer
-          isPlaying
-          duration={1250}
-          colors={[colors.dark.primary] as any}
-          trailColor={colors.dark.secondary as any}
-          size={275}
-        >
-          {({ remainingTime }) => {
-            const minutes = Math.floor(remainingTime / 60);
-            const seconds = remainingTime % 60;
-
-            return (
-              <View className="bg-[#262138] h-[252px] w-[252px] rounded-full justify-center items-center">
-                <H1 className="text-white text-7xl">
-                  {minutes}:{seconds}
-                </H1>
-              </View>
-            );
-          }}
-        </CountdownCircleTimer>
+      <View className="flex-1 justify-center items-center gap-12">
+        <View className="w-full items-center px-12 gap-4">
+          <Text className="text-muted text-xl">Current task</Text>
+          <Input value="Insert task here" className="w-full" />
+        </View>
+        <CountdownTimer />
       </View>
     </SafeAreaWrapper>
   );
