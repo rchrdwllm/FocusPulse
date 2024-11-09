@@ -1,4 +1,8 @@
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  FlatList,
+} from "react-native-gesture-handler";
 import SafeAreaWrapper from "../ui/safe-area-wrapper";
 import { H3 } from "../ui/typography";
 import Animated, {
@@ -14,23 +18,26 @@ import { useColorScheme, useWindowDimensions, View } from "react-native";
 import { TimerPicker, TimerPickerRef } from "react-native-timer-picker";
 import { colors } from "@/constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
-import { router } from "expo-router";
+
+type TimePickerModalProps = {
+  setShowTimePicker: (show: boolean) => void;
+  setDuration: (duration: number) => void;
+};
 
 const TimePickerModal = ({
   setShowTimePicker,
-}: {
-  setShowTimePicker: (show: boolean) => void;
-}) => {
+  setDuration,
+}: TimePickerModalProps) => {
   const modalOffset = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
   const { height } = useWindowDimensions();
   const colorScheme = useColorScheme() || "light";
   const { background, foreground, muted } = colors[colorScheme];
   const timePickerRef = useRef<TimerPickerRef>(null);
-  const [duration, setDuration] = useState(0);
+  const [newDuration, setNewDuration] = useState(0);
 
   const toggleModal = () => {
     setShowTimePicker(false);
@@ -63,12 +70,9 @@ const TimePickerModal = ({
     });
 
   const handleSubmit = () => {
-    router.push({
-      pathname: "/(home)",
-      params: {
-        duration,
-      },
-    });
+    setDuration(newDuration);
+
+    toggleModal();
   };
 
   return (
@@ -109,6 +113,7 @@ const TimePickerModal = ({
                 hideHours
                 minuteLabel="min"
                 secondLabel="sec"
+                FlatList={FlatList as any}
                 LinearGradient={LinearGradient}
                 styles={{
                   theme: "light",
@@ -135,12 +140,20 @@ const TimePickerModal = ({
                   const minutes = duration.minutes;
                   const seconds = duration.seconds;
 
-                  setDuration(minutes * 60 + seconds);
+                  setNewDuration(minutes * 60 + seconds);
                 }}
               />
-              <Button onPress={handleSubmit}>
-                <Text>Set</Text>
-              </Button>
+              <View className="flex-row gap-4 px-12">
+                <Button
+                  onPress={toggleModal}
+                  className="flex-1 bg-input border border-border"
+                >
+                  <Text className="text-foreground">Cancel</Text>
+                </Button>
+                <Button className="flex-1" onPress={handleSubmit}>
+                  <Text>Set</Text>
+                </Button>
+              </View>
             </View>
           </SafeAreaWrapper>
         </Animated.View>

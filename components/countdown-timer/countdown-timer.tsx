@@ -3,7 +3,7 @@ import {
   CountdownCircleTimer,
   useCountdown,
 } from "react-native-countdown-circle-timer";
-import { Alert, useColorScheme, View } from "react-native";
+import { useColorScheme, View } from "react-native";
 import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react-native";
