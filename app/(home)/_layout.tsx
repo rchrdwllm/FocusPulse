@@ -1,7 +1,6 @@
 import { useColorScheme } from "react-native";
 import { Tabs } from "expo-router";
 import { Circle, Clock } from "lucide-react-native";
-import { cn } from "@/lib/utils";
 import { colors } from "@/constants/colors";
 import NavTab from "@/components/ui/nav-tab";
 
