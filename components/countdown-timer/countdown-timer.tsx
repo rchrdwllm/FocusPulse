@@ -27,7 +27,7 @@ const CountdownTimer = ({ duration }: CountdownTimerProps) => {
     <>
       <CountdownCircleTimer
         isPlaying={isPlaying}
-        duration={duration ?? 0}
+        duration={duration || 0}
         colors={
           [
             colors[colorScheme].primary,
@@ -51,7 +51,7 @@ const CountdownTimer = ({ duration }: CountdownTimerProps) => {
           return (
             <View className="bg-secondary h-[252px] w-[252px] rounded-full justify-center items-center">
               <H1 className="text-foreground text-7xl">
-                {minutes}:{seconds}
+                {minutes}:{seconds.toString().padStart(2, "0")}
               </H1>
             </View>
           );
