@@ -26,7 +26,6 @@ const TimePickerModal = ({
 }) => {
   const modalOffset = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
-  const isDragging = useSharedValue(false);
   const { height } = useWindowDimensions();
   const colorScheme = useColorScheme() || "light";
   const { background, foreground, muted } = colors[colorScheme];
@@ -40,21 +39,7 @@ const TimePickerModal = ({
     overlayOpacity.value = 0;
   };
 
-  const longPressGesture = Gesture.LongPress()
-    .onStart(() => {
-      isDragging.value = true;
-    })
-    .minDuration(250);
-
   const pan = Gesture.Pan()
-    .manualActivation(true)
-    .onTouchesMove((_e, state) => {
-      if (isDragging.value) {
-        state.activate();
-      } else {
-        state.fail();
-      }
-    })
     .onChange((e) => {
       modalOffset.value += e.changeY;
       overlayOpacity.value = 1 - modalOffset.value / height;
@@ -74,10 +59,8 @@ const TimePickerModal = ({
 
         modalOffset.value = withSpring(height);
         overlayOpacity.value = withSpring(1);
-        isDragging.value = false;
       }
-    })
-    .simultaneousWithExternalGesture(longPressGesture);
+    });
 
   const handleSubmit = () => {
     router.push({
