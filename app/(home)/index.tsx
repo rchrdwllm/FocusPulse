@@ -3,8 +3,11 @@ import CountdownTimer from "@/components/countdown-timer/countdown-timer";
 import { Input } from "@/components/ui/input";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
+import { useLocalSearchParams } from "expo-router";
 
 const HomeScreen = () => {
+  const { duration } = useLocalSearchParams();
+
   return (
     <SafeAreaWrapper className="bg-background px-4">
       <View className="flex-1 justify-center items-center gap-12">
@@ -12,7 +15,7 @@ const HomeScreen = () => {
           <Text className="text-muted text-xl">Current task</Text>
           <Input value="Insert task here" className="w-full" />
         </View>
-        <CountdownTimer />
+        <CountdownTimer duration={parseInt(duration as string)} />
       </View>
     </SafeAreaWrapper>
   );

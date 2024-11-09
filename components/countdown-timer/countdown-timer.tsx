@@ -7,21 +7,27 @@ import { Alert, useColorScheme, View } from "react-native";
 import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const DURATION = 15;
+type CountdownTimerProps = {
+  duration: number;
+};
 
-const CountdownTimer = () => {
+const CountdownTimer = ({ duration }: CountdownTimerProps) => {
   const colorScheme = useColorScheme() as "light" | "dark";
   const { buttonForeground } = colors[colorScheme];
   const [isPlaying, setIsPlaying] = useState(true);
   const [timerKey, setTimerKey] = useState(0);
 
+  useEffect(() => {
+    setTimerKey((prev) => prev + 1);
+  }, [duration]);
+
   return (
     <>
       <CountdownCircleTimer
         isPlaying={isPlaying}
-        duration={DURATION}
+        duration={duration ?? 0}
         colors={
           [
             colors[colorScheme].primary,
@@ -29,7 +35,7 @@ const CountdownTimer = () => {
             colors[colorScheme].destructive,
           ] as any
         }
-        colorsTime={[DURATION, 5, 0]}
+        colorsTime={[duration, 5, 0]}
         trailColor={colors[colorScheme].tertiary as any}
         onComplete={() => {
           return { shouldRepeat: true };

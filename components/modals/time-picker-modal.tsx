@@ -10,8 +10,14 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { useWindowDimensions } from "react-native";
-import { useEffect } from "react";
+import { useColorScheme, useWindowDimensions, View } from "react-native";
+import { TimerPicker, TimerPickerRef } from "react-native-timer-picker";
+import { colors } from "@/constants/colors";
+import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
+import { Text } from "../ui/text";
+import { router } from "expo-router";
 
 const TimePickerModal = ({
   setShowTimePicker,
@@ -21,6 +27,10 @@ const TimePickerModal = ({
   const modalOffset = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
   const { height } = useWindowDimensions();
+  const colorScheme = useColorScheme() || "light";
+  const { background, foreground, muted } = colors[colorScheme];
+  const timePickerRef = useRef<TimerPickerRef>(null);
+  const [duration, setDuration] = useState(0);
 
   const toggleModal = () => {
     setShowTimePicker(false);
@@ -51,6 +61,15 @@ const TimePickerModal = ({
         overlayOpacity.value = withSpring(1);
       }
     });
+
+  const handleSubmit = () => {
+    router.push({
+      pathname: "/(home)",
+      params: {
+        duration,
+      },
+    });
+  };
 
   return (
     <>
@@ -83,6 +102,46 @@ const TimePickerModal = ({
         >
           <SafeAreaWrapper>
             <H3 className="text-center pt-12">Focus time</H3>
+            <View className="flex-1 justify-center items-center gap-4">
+              <TimerPicker
+                ref={timePickerRef}
+                padWithNItems={3}
+                hideHours
+                minuteLabel="min"
+                secondLabel="sec"
+                LinearGradient={LinearGradient}
+                styles={{
+                  theme: "light",
+                  backgroundColor: background,
+                  pickerItem: {
+                    fontSize: 34,
+                    fontFamily: "InriaSansRegular",
+                    color: foreground,
+                  },
+                  pickerLabel: {
+                    fontSize: 26,
+                    right: -20,
+                    fontFamily: "InriaSansRegular",
+                    color: muted,
+                  },
+                  pickerLabelContainer: {
+                    width: 60,
+                  },
+                  pickerItemContainer: {
+                    width: 150,
+                  },
+                }}
+                onDurationChange={(duration) => {
+                  const minutes = duration.minutes;
+                  const seconds = duration.seconds;
+
+                  setDuration(minutes * 60 + seconds);
+                }}
+              />
+              <Button onPress={handleSubmit}>
+                <Text>Set</Text>
+              </Button>
+            </View>
           </SafeAreaWrapper>
         </Animated.View>
       </GestureDetector>
