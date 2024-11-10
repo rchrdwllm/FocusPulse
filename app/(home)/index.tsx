@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
+import Sessions from "@/components/countdown-timer/sessions";
 
 const HomeScreen = () => {
-  const { focusDuration, shortDuration, longDuration, newTimerKey } =
+  const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
     useLocalSearchParams();
 
   return (
@@ -22,6 +23,7 @@ const HomeScreen = () => {
           shortDuration={parseInt(shortDuration as string)}
           longDuration={parseInt(longDuration as string)}
         />
+        <Sessions sessions={parseInt(sessions as string)} />
       </View>
     </SafeAreaWrapper>
   );
