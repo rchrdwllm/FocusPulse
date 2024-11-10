@@ -4,7 +4,7 @@ import { useColorScheme, View } from "react-native";
 import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react-native";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { TimerState } from "@/types";
 import Sessions from "./sessions";
 import { createSessions } from "@/lib/utils";

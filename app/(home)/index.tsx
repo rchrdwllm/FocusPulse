@@ -5,14 +5,25 @@ import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
 import Sessions from "@/components/countdown-timer/sessions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TimerState } from "@/types";
 import { H1 } from "@/components/ui/typography";
 
 const HomeScreen = () => {
-  const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
-    useLocalSearchParams();
+  const {
+    focusDuration,
+    shortDuration,
+    longDuration,
+    newTimerKey,
+    sessions,
+    task,
+  } = useLocalSearchParams();
   const [timerState, setTimerState] = useState<TimerState>("focus");
+  const [currentTask, setCurrentTask] = useState("");
+
+  useEffect(() => {
+    setCurrentTask(task as string);
+  }, [task]);
 
   return (
     <SafeAreaWrapper className="bg-background px-4">
@@ -25,7 +36,11 @@ const HomeScreen = () => {
               ? "Take a short break"
               : "Enjoy a long break"}
           </H1>
-          <Input value="Insert task here" className="w-full" />
+          <Input
+            value={currentTask}
+            onChange={(e) => setCurrentTask(e.nativeEvent.text)}
+            className="w-full"
+          />
         </View>
         <CountdownTimer
           newTimerKey={parseInt(newTimerKey as string)}

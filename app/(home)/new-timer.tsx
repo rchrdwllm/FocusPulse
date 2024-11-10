@@ -16,10 +16,20 @@ import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { formatDuration } from "@/lib/utils";
 import SessionPickerModal from "@/components/modals/session-picker-modal";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { timerSchema } from "@/schemas/timer-schema";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const NewTimerScreen = () => {
+  const form = useForm<z.infer<typeof timerSchema>>({
+    resolver: zodResolver(timerSchema),
+    defaultValues: {
+      task: "",
+    },
+  });
   const [showFocusPicker, setShowFocusPicker] = useState(false);
   const [showShortPicker, setShowShortPicker] = useState(false);
   const [showLongPicker, setShowLongPicker] = useState(false);
@@ -46,7 +56,6 @@ const NewTimerScreen = () => {
   const formattedSessions = useMemo(() => {
     return sessions > 1 ? `${sessions} sessions` : `${sessions} session`;
   }, [sessions]);
-
   const [newTimerKey, setNewTimerKey] = useState(0);
 
   useEffect(() => {
@@ -64,12 +73,13 @@ const NewTimerScreen = () => {
     }
   }, [showFocusPicker, showShortPicker, showLongPicker, showSessionPicker]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (data: z.infer<typeof timerSchema>) => {
     setNewTimerKey(newTimerKey + 1);
 
     router.push({
       pathname: "/(home)",
       params: {
+        task: data.task,
         focusDuration,
         shortDuration,
         longDuration,
@@ -124,7 +134,26 @@ const NewTimerScreen = () => {
             <H3 className="text-center">New timer</H3>
           </View>
           <View className="gap-4">
-            <Input placeholder="Task: Write an article" />
+            <Controller
+              control={form.control}
+              rules={{
+                required: true,
+              }}
+              name="task"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  placeholder="Task: Write an article"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+              )}
+            />
+            {form.formState.errors.task && (
+              <Text className="text-red-500">
+                {form.formState.errors.task.message}
+              </Text>
+            )}
             <AnimatedPressable
               onPress={() => setShowFocusPicker(!showFocusPicker)}
               style={{
@@ -191,7 +220,7 @@ const NewTimerScreen = () => {
             </AnimatedPressable>
           </View>
         </Animated.View>
-        <Button onPress={handleSubmit}>
+        <Button onPress={form.handleSubmit(handleSubmit)}>
           <Text>Start</Text>
         </Button>
       </SafeAreaWrapper>
