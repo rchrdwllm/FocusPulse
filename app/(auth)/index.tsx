@@ -5,6 +5,7 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  useColorScheme,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
@@ -26,7 +27,8 @@ import {
 import { login } from "@/server/actions";
 
 const loginBg = require("@/assets/images/login-bg.png");
-const authLogo = require("@/assets/images/focus-pulse-auth-logo.png");
+const authLogoLight = require("@/assets/images/focus-pulse-auth-logo-light.png");
+const authLogoDark = require("@/assets/images/focus-pulse-auth-logo-dark.png");
 
 const LoginScreen = () => {
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -38,6 +40,7 @@ const LoginScreen = () => {
   });
   const [open, setOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
+  const colorScheme = useColorScheme() || "light";
 
   const handleLogin = async (data: z.infer<typeof loginSchema>) => {
     setOpen(true);
@@ -76,7 +79,9 @@ const LoginScreen = () => {
             <View className="flex-1 mt-8">
               <View className="items-center">
                 <Image
-                  source={authLogo}
+                  source={
+                    colorScheme === "light" ? authLogoDark : authLogoLight
+                  }
                   className="w-1/2 h-[195]"
                   resizeMode="contain"
                 />

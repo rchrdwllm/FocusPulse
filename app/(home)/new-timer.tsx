@@ -23,7 +23,7 @@ const NewTimerScreen = () => {
   const containerScale = useSharedValue(1);
   const containerOpacity = useSharedValue(1);
   const [duration, setDuration] = useState(0);
-  const [formattedDuration, setFormattedDuration] = useState("0 mins 0 secs");
+  const [formattedDuration, setFormattedDuration] = useState("25 mins 0 secs");
 
   const handlePress = () => {
     setShowTimePicker(!showTimePicker);

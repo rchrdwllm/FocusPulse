@@ -37,7 +37,7 @@ const TimePickerModal = ({
   const colorScheme = useColorScheme() || "light";
   const { background, foreground, muted } = colors[colorScheme];
   const timePickerRef = useRef<TimerPickerRef>(null);
-  const [newDuration, setNewDuration] = useState(0);
+  const [newDuration, setNewDuration] = useState(1500);
 
   const toggleModal = () => {
     setShowTimePicker(false);
