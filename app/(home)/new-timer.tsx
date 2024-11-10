@@ -3,7 +3,7 @@ import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { H3 } from "@/components/ui/typography";
 import { Pressable, View } from "react-native";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Animated, {
   useSharedValue,
   withSpring,
@@ -14,6 +14,7 @@ import TimePickerModal from "@/components/modals/time-picker-modal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
+import { formatDuration } from "@/lib/utils";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -29,35 +30,17 @@ const NewTimerScreen = () => {
   const [focusDuration, setFocusDuration] = useState(1500);
   const [shortDuration, setShortDuration] = useState(300);
   const [longDuration, setLongDuration] = useState(900);
-  const [formattedFocus, setFormattedFocus] = useState("");
-  const [formattedShort, setFormattedShort] = useState("");
-  const [formattedLong, setFormattedLong] = useState("");
+  const formattedFocus = useMemo(() => {
+    return formatDuration(focusDuration);
+  }, [focusDuration]);
+  const formattedShort = useMemo(() => {
+    return formatDuration(shortDuration);
+  }, [shortDuration]);
+  const formattedLong = useMemo(() => {
+    return formatDuration(longDuration);
+  }, [longDuration]);
+
   const [newTimerKey, setNewTimerKey] = useState(0);
-
-  const handlePress = () => {};
-
-  const handlePressIn = () => {
-    focusPressableScale.value = withSpring(0.95, buttonSpring);
-  };
-
-  const handlePressOut = () => {
-    focusPressableScale.value = withSpring(1, buttonSpring);
-  };
-
-  const formatDuration = (duration: number) => {
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
-
-    return `${minutes} ${minutes === 1 ? "min" : "mins"} ${seconds} ${
-      seconds === 1 ? "sec" : "secs"
-    }`;
-  };
-
-  useEffect(() => {
-    setFormattedFocus(formatDuration(focusDuration));
-    setFormattedShort(formatDuration(shortDuration));
-    setFormattedLong(formatDuration(longDuration));
-  }, [focusDuration, shortDuration, longDuration]);
 
   useEffect(() => {
     if (showFocusPicker || showShortPicker || showLongPicker) {
@@ -76,6 +59,8 @@ const NewTimerScreen = () => {
       pathname: "/(home)",
       params: {
         focusDuration,
+        shortDuration,
+        longDuration,
         newTimerKey: newTimerKey + 1,
       },
     });
@@ -86,6 +71,7 @@ const NewTimerScreen = () => {
       {showFocusPicker && (
         <TimePickerModal
           title={"Focus time"}
+          defaultDuration={focusDuration}
           setDuration={setFocusDuration}
           setShowTimePicker={setShowFocusPicker}
         />
@@ -93,6 +79,7 @@ const NewTimerScreen = () => {
       {showShortPicker && (
         <TimePickerModal
           title={"Short break time"}
+          defaultDuration={shortDuration}
           setDuration={setShortDuration}
           setShowTimePicker={setShowShortPicker}
         />
@@ -100,6 +87,7 @@ const NewTimerScreen = () => {
       {showLongPicker && (
         <TimePickerModal
           title={"Long break time"}
+          defaultDuration={longDuration}
           setDuration={setLongDuration}
           setShowTimePicker={setShowLongPicker}
         />

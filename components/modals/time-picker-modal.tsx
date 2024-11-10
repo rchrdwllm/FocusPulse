@@ -18,19 +18,22 @@ import { useColorScheme, useWindowDimensions, View } from "react-native";
 import { TimerPicker, TimerPickerRef } from "react-native-timer-picker";
 import { colors } from "@/constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
+import { getTimeObject } from "@/lib/utils";
 
 type TimePickerModalProps = {
   setShowTimePicker: (show: boolean) => void;
   setDuration: (duration: number) => void;
+  defaultDuration: number;
   title: string;
 };
 
 const TimePickerModal = ({
   setShowTimePicker,
   setDuration,
+  defaultDuration,
   title,
 }: TimePickerModalProps) => {
   const modalOffset = useSharedValue(0);
@@ -39,7 +42,10 @@ const TimePickerModal = ({
   const colorScheme = useColorScheme() || "light";
   const { background, foreground, muted } = colors[colorScheme];
   const timePickerRef = useRef<TimerPickerRef>(null);
-  const [newDuration, setNewDuration] = useState(1500);
+  const [newDuration, setNewDuration] = useState(defaultDuration);
+  const { minutes, seconds } = useMemo(() => {
+    return getTimeObject(defaultDuration);
+  }, [defaultDuration]);
 
   const toggleModal = () => {
     setShowTimePicker(false);
@@ -112,6 +118,10 @@ const TimePickerModal = ({
               <TimerPicker
                 ref={timePickerRef}
                 padWithNItems={3}
+                initialValue={{
+                  minutes,
+                  seconds,
+                }}
                 hideHours
                 minuteLabel="min"
                 secondLabel="sec"
