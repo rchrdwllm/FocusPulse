@@ -35,18 +35,29 @@ const CountdownTimer = ({
   const [sessionsArr, setSessionArr] = useState(() => createSessions(sessions));
   const [sessionCount, setSessionCount] = useState(0);
 
-  useEffect(() => {
+  const resetSessions = () => {
     setSessionArr(createSessions(sessions));
-  }, [sessions, timerKey]);
+    setSessionCount(0);
+  };
+
+  useEffect(() => {
+    resetSessions();
+  }, [sessions]);
 
   useEffect(() => {
     setTimerKey((prev) => prev + 1);
-  }, [focusDuration, shortDuration, longDuration]);
+  }, [focusDuration, shortDuration, longDuration, sessions]);
 
   useEffect(() => {
     setTimerKey(newTimerKey);
     setIsPlaying(newTimerKey >= 1);
   }, [newTimerKey]);
+
+  useEffect(() => {
+    if (sessionCount === sessions) {
+      setTimerState("long");
+    }
+  }, [sessionCount]);
 
   useEffect(() => {
     const updatedSessions = sessionsArr.map((session) => {
@@ -148,6 +159,7 @@ const CountdownTimer = ({
           onComplete={() => {
             setTimerKey((prev) => prev + 1);
             setTimerState("focus");
+            resetSessions();
           }}
           size={275}
           rotation="counterclockwise"

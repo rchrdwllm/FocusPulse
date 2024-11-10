@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { View } from "react-native";
 import { Session as SessionType } from "@/types";
 import Session from "./session";
