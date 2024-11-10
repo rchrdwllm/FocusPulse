@@ -1,7 +1,12 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
-import { useFonts } from "expo-font";
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_700Bold,
+  Inter_500Medium,
+} from "@expo-google-fonts/inter";
 import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
 import { colors } from "@/constants/colors";
@@ -11,9 +16,9 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const [loaded] = useFonts({
-    InriaSansRegular: require("../assets/fonts/InriaSans-Regular.ttf"),
-    InriaSansBold: require("../assets/fonts/InriaSans-Bold.ttf"),
-    InriaSansItalic: require("../assets/fonts/InriaSans-Italic.ttf"),
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_700Bold,
   });
   const colorScheme = useColorScheme() || "light";
   const { background } = colors[colorScheme];

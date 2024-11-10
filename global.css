@@ -14,9 +14,8 @@
     --border: #d9d5e7;
     --input: #eeedf8;
     --destructive: "#9f1239"
-    --sans: "InriaSansRegular";
-    --bold: "InriaSansBold";
-    --italic: "InriaSansItalic";
+    --sans: "Inter_400Regular";
+    --bold: "Inter_700Bold";
   }
 
   .dark:root {
@@ -30,8 +29,7 @@
     --border: #3b3453;
     --input: #262138;
     --destructive: "#be123c"
-    --sans: "InriaSansRegular";
-    --bold: "InriaSansBold";
-    --italic: "InriaSansItalic";
+    --sans: "Inter_400Regular";
+    --bold: "Inter_700Bold";
   }
 }

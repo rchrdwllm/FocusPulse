@@ -44,8 +44,8 @@ module.exports = {
       },
       fontFamily: {
         sans: "var(--sans)",
+        medium: "var(--medium)",
         bold: "var(--bold)",
-        italic: "var(--italic)",
       },
     },
   },

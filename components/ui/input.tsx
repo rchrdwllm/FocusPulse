@@ -20,7 +20,7 @@ const Input = forwardRef<
       )}
       placeholderTextColor={muted}
       placeholderClassName={cn("text-muted", placeholderClassName)}
-      style={{ fontFamily: "InriaSansRegular" }}
+      style={{ fontFamily: "Inter_400Regular" }}
       {...props}
     />
   );

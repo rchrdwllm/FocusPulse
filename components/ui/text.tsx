@@ -19,7 +19,7 @@ const Text = forwardRef<TextRef, SlottableTextProps>(
         )}
         ref={ref}
         style={{
-          fontFamily: "InriaSansRegular",
+          fontFamily: "Inter_400Regular",
         }}
         {...props}
       />

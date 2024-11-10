@@ -128,13 +128,13 @@ const SessionPickerModal = ({
                   backgroundColor: background,
                   pickerItem: {
                     fontSize: 34,
-                    fontFamily: "InriaSansRegular",
+                    fontFamily: "Inter_500Medium",
                     color: foreground,
                   },
                   pickerLabel: {
                     fontSize: 26,
                     right: -20,
-                    fontFamily: "InriaSansRegular",
+                    fontFamily: "Inter_400Regular",
                     color: muted,
                   },
                   pickerLabelContainer: {

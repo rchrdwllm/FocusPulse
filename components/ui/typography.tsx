@@ -18,7 +18,7 @@ const H1 = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         {...props}
         style={{
-          fontFamily: "InriaSansBold",
+          fontFamily: "Inter_700Bold",
         }}
       />
     );
@@ -41,7 +41,7 @@ const H2 = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         {...props}
         style={{
-          fontFamily: "InriaSansBold",
+          fontFamily: "Inter_700Bold",
         }}
       />
     );
@@ -64,7 +64,7 @@ const H3 = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         {...props}
         style={{
-          fontFamily: "InriaSansBold",
+          fontFamily: "Inter_700Bold",
         }}
       />
     );
@@ -102,7 +102,7 @@ const P = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         {...props}
         style={{
-          fontFamily: "InriaSansRegular",
+          fontFamily: "Inter_400Regular",
         }}
       />
     );
