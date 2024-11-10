@@ -119,7 +119,7 @@ const AlertDialogTitle = React.forwardRef<
       className
     )}
     style={{
-      fontFamily: "InriaSansBold",
+      fontFamily: "Inter_700Bold",
     }}
     {...props}
   />

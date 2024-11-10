@@ -16,6 +16,7 @@
     --destructive: "#9f1239"
     --sans: "Inter_400Regular";
     --bold: "Inter_700Bold";
+    --medium: "Inter_500Medium";
   }
 
   .dark:root {
@@ -31,5 +32,6 @@
     --destructive: "#be123c"
     --sans: "Inter_400Regular";
     --bold: "Inter_700Bold";
+    --medium: "Inter_500Medium";
   }
 }
