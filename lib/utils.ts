@@ -1,3 +1,4 @@
+import { Session } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -19,4 +20,16 @@ export const getTimeObject = (duration: number) => {
     minutes: Math.floor(duration / 60),
     seconds: duration % 60,
   };
+};
+
+export const createSessions = (sessions: number) => {
+  const numArray = Array.from(
+    { length: !sessions ? 4 : sessions },
+    (_, i) => i
+  );
+
+  return numArray.map((num) => ({
+    id: num,
+    isCompleted: false,
+  })) as Session[];
 };

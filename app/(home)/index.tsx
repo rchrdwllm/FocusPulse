@@ -5,16 +5,26 @@ import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
 import Sessions from "@/components/countdown-timer/sessions";
+import { useState } from "react";
+import { TimerState } from "@/types";
+import { H1 } from "@/components/ui/typography";
 
 const HomeScreen = () => {
   const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
     useLocalSearchParams();
+  const [timerState, setTimerState] = useState<TimerState>("focus");
 
   return (
     <SafeAreaWrapper className="bg-background px-4">
       <View className="flex-1 justify-center items-center gap-12">
-        <View className="w-full items-center px-12 gap-4">
-          <Text className="text-muted text-xl">Current task</Text>
+        <View className="w-full items-center px-12 gap-12">
+          <H1>
+            {timerState === "focus"
+              ? "Focus!"
+              : timerState === "short"
+              ? "Take a short break"
+              : "Enjoy a long break"}
+          </H1>
           <Input value="Insert task here" className="w-full" />
         </View>
         <CountdownTimer
@@ -22,8 +32,10 @@ const HomeScreen = () => {
           focusDuration={parseInt(focusDuration as string)}
           shortDuration={parseInt(shortDuration as string)}
           longDuration={parseInt(longDuration as string)}
+          sessions={parseInt(sessions as string)}
+          timerState={timerState}
+          setTimerState={setTimerState}
         />
-        <Sessions sessions={parseInt(sessions as string)} />
       </View>
     </SafeAreaWrapper>
   );
