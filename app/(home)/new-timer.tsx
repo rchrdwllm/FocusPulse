@@ -18,65 +18,90 @@ import { router } from "expo-router";
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const NewTimerScreen = () => {
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const pressableScale = useSharedValue(1);
+  const [showFocusPicker, setShowFocusPicker] = useState(false);
+  const [showShortPicker, setShowShortPicker] = useState(false);
+  const [showLongPicker, setShowLongPicker] = useState(false);
+  const focusPressableScale = useSharedValue(1);
+  const shortPressableScale = useSharedValue(1);
+  const longPressableScale = useSharedValue(1);
   const containerScale = useSharedValue(1);
   const containerOpacity = useSharedValue(1);
-  const [duration, setDuration] = useState(0);
-  const [formattedDuration, setFormattedDuration] = useState("25 mins 0 secs");
+  const [focusDuration, setFocusDuration] = useState(1500);
+  const [shortDuration, setShortDuration] = useState(300);
+  const [longDuration, setLongDuration] = useState(900);
+  const [formattedFocus, setFormattedFocus] = useState("");
+  const [formattedShort, setFormattedShort] = useState("");
+  const [formattedLong, setFormattedLong] = useState("");
+  const [newTimerKey, setNewTimerKey] = useState(0);
 
-  const handlePress = () => {
-    setShowTimePicker(!showTimePicker);
-  };
+  const handlePress = () => {};
 
   const handlePressIn = () => {
-    pressableScale.value = withSpring(0.98, buttonSpring);
+    focusPressableScale.value = withSpring(0.95, buttonSpring);
   };
 
   const handlePressOut = () => {
-    pressableScale.value = withSpring(1, buttonSpring);
+    focusPressableScale.value = withSpring(1, buttonSpring);
   };
 
-  const formatDuration = () => {
+  const formatDuration = (duration: number) => {
     const minutes = Math.floor(duration / 60);
     const seconds = duration % 60;
 
-    setFormattedDuration(
-      `${minutes} ${minutes === 1 ? "min" : "mins"} ${seconds} ${
-        seconds === 1 ? "sec" : "secs"
-      }`
-    );
+    return `${minutes} ${minutes === 1 ? "min" : "mins"} ${seconds} ${
+      seconds === 1 ? "sec" : "secs"
+    }`;
   };
 
   useEffect(() => {
-    formatDuration();
-  }, [duration]);
+    setFormattedFocus(formatDuration(focusDuration));
+    setFormattedShort(formatDuration(shortDuration));
+    setFormattedLong(formatDuration(longDuration));
+  }, [focusDuration, shortDuration, longDuration]);
 
   useEffect(() => {
-    if (showTimePicker) {
+    if (showFocusPicker || showShortPicker || showLongPicker) {
       containerScale.value = withTiming(0.8);
       containerOpacity.value = withTiming(0.3);
     } else {
       containerScale.value = withTiming(1);
       containerOpacity.value = withTiming(1);
     }
-  }, [showTimePicker]);
+  }, [showFocusPicker, showShortPicker, showLongPicker]);
 
   const handleSubmit = () => {
+    setNewTimerKey(newTimerKey + 1);
+
     router.push({
       pathname: "/(home)",
       params: {
-        duration,
+        focusDuration,
+        newTimerKey: newTimerKey + 1,
       },
     });
   };
 
   return (
     <GestureHandlerRootView>
-      {showTimePicker && (
+      {showFocusPicker && (
         <TimePickerModal
-          setDuration={setDuration}
-          setShowTimePicker={setShowTimePicker}
+          title={"Focus time"}
+          setDuration={setFocusDuration}
+          setShowTimePicker={setShowFocusPicker}
+        />
+      )}
+      {showShortPicker && (
+        <TimePickerModal
+          title={"Short break time"}
+          setDuration={setShortDuration}
+          setShowTimePicker={setShowShortPicker}
+        />
+      )}
+      {showLongPicker && (
+        <TimePickerModal
+          title={"Long break time"}
+          setDuration={setLongDuration}
+          setShowTimePicker={setShowLongPicker}
         />
       )}
       <SafeAreaWrapper className="bg-background px-4 pb-8">
@@ -93,16 +118,52 @@ const NewTimerScreen = () => {
           <View className="gap-4">
             <Input placeholder="Task: Write an article" />
             <AnimatedPressable
-              onPress={handlePress}
+              onPress={() => setShowFocusPicker(!showFocusPicker)}
               style={{
-                transform: [{ scale: pressableScale }],
+                transform: [{ scale: focusPressableScale }],
               }}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
+              onPressIn={() => {
+                focusPressableScale.value = withSpring(0.95, buttonSpring);
+              }}
+              onPressOut={() => {
+                focusPressableScale.value = withSpring(1, buttonSpring);
+              }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
               <Text className="text-muted">Focus time</Text>
-              <Text>{formattedDuration}</Text>
+              <Text>{formattedFocus}</Text>
+            </AnimatedPressable>
+            <AnimatedPressable
+              onPress={() => setShowShortPicker(!showShortPicker)}
+              style={{
+                transform: [{ scale: shortPressableScale }],
+              }}
+              onPressIn={() => {
+                shortPressableScale.value = withSpring(0.95, buttonSpring);
+              }}
+              onPressOut={() => {
+                shortPressableScale.value = withSpring(1, buttonSpring);
+              }}
+              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+            >
+              <Text className="text-muted">Short break time</Text>
+              <Text>{formattedShort}</Text>
+            </AnimatedPressable>
+            <AnimatedPressable
+              onPress={() => setShowLongPicker(!showLongPicker)}
+              style={{
+                transform: [{ scale: longPressableScale }],
+              }}
+              onPressIn={() => {
+                longPressableScale.value = withSpring(0.95, buttonSpring);
+              }}
+              onPressOut={() => {
+                longPressableScale.value = withSpring(1, buttonSpring);
+              }}
+              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+            >
+              <Text className="text-muted">Long break time</Text>
+              <Text>{formattedLong}</Text>
             </AnimatedPressable>
           </View>
         </Animated.View>

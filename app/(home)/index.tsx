@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
 
 const HomeScreen = () => {
-  const { duration } = useLocalSearchParams();
+  const { duration, newTimerKey } = useLocalSearchParams();
 
   return (
     <SafeAreaWrapper className="bg-background px-4">
@@ -15,7 +15,10 @@ const HomeScreen = () => {
           <Text className="text-muted text-xl">Current task</Text>
           <Input value="Insert task here" className="w-full" />
         </View>
-        <CountdownTimer duration={parseInt(duration as string)} />
+        <CountdownTimer
+          newTimerKey={parseInt(newTimerKey as string)}
+          duration={parseInt(duration as string)}
+        />
       </View>
     </SafeAreaWrapper>
   );

@@ -1,8 +1,5 @@
 import { H1 } from "@/components/ui/typography";
-import {
-  CountdownCircleTimer,
-  useCountdown,
-} from "react-native-countdown-circle-timer";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useColorScheme, View } from "react-native";
 import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
@@ -11,23 +8,29 @@ import { useEffect, useState } from "react";
 
 type CountdownTimerProps = {
   duration: number;
+  newTimerKey: number;
 };
 
-const CountdownTimer = ({ duration }: CountdownTimerProps) => {
+const CountdownTimer = ({ duration, newTimerKey }: CountdownTimerProps) => {
   const colorScheme = useColorScheme() as "light" | "dark";
   const { buttonForeground } = colors[colorScheme];
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
 
   useEffect(() => {
     setTimerKey((prev) => prev + 1);
   }, [duration]);
 
+  useEffect(() => {
+    setTimerKey(newTimerKey);
+    setIsPlaying(newTimerKey >= 1);
+  }, [newTimerKey]);
+
   return (
     <>
       <CountdownCircleTimer
         isPlaying={isPlaying}
-        duration={duration || 0}
+        duration={duration || 1500}
         colors={
           [
             colors[colorScheme].primary,

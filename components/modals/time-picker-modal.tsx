@@ -25,11 +25,13 @@ import { Text } from "../ui/text";
 type TimePickerModalProps = {
   setShowTimePicker: (show: boolean) => void;
   setDuration: (duration: number) => void;
+  title: string;
 };
 
 const TimePickerModal = ({
   setShowTimePicker,
   setDuration,
+  title,
 }: TimePickerModalProps) => {
   const modalOffset = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
@@ -105,7 +107,7 @@ const TimePickerModal = ({
           className="flex-1 absolute h-full w-full bg-background z-20"
         >
           <SafeAreaWrapper>
-            <H3 className="text-center pt-12">Focus time</H3>
+            <H3 className="text-center pt-12">{title}</H3>
             <View className="flex-1 justify-center items-center gap-4">
               <TimerPicker
                 ref={timePickerRef}
