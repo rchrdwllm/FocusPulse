@@ -88,8 +88,9 @@ const CountdownTimer = ({
           colorsTime={[focusDuration, 5, 0]}
           trailColor={colors[colorScheme].tertiary as any}
           onComplete={() => {
+            setSessionCount((prev) => prev + 1);
             setTimerKey((prev) => prev + 1);
-            setTimerState("short");
+            setTimerState(sessionCount + 1 === sessions ? "long" : "short");
           }}
           size={275}
           rotation="counterclockwise"
@@ -122,7 +123,6 @@ const CountdownTimer = ({
           colorsTime={[shortDuration, 5, 0]}
           trailColor={colors[colorScheme].tertiary as any}
           onComplete={() => {
-            setSessionCount((prev) => prev + 1);
             setTimerKey((prev) => prev + 1);
             setTimerState("focus");
           }}
