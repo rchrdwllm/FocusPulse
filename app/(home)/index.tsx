@@ -29,7 +29,7 @@ const HomeScreen = () => {
     <SafeAreaWrapper className="bg-background px-4">
       <View className="flex-1 justify-center items-center gap-12">
         <View className="w-full items-center px-12 gap-12">
-          <H1>
+          <H1 className="text-center text-3xl">
             {timerState === "focus"
               ? "Focus!"
               : timerState === "short"
