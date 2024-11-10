@@ -1,12 +1,15 @@
 import { colors } from "@/constants/colors";
 import { Session as SessionType } from "@/types";
-import { useEffect } from "react";
-import { useColorScheme, View } from "react-native";
+import { useEffect, useMemo } from "react";
+import { useColorScheme } from "react-native";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 
 const Session = ({ isCompleted }: SessionType) => {
   const colorScheme = useColorScheme() || "light";
-  const { tertiary, primary } = colors[colorScheme];
+  const { tertiary, primary } = useMemo(
+    () => colors[colorScheme],
+    [colorScheme]
+  );
   const bgColor = useSharedValue(tertiary);
 
   useEffect(() => {
@@ -15,7 +18,7 @@ const Session = ({ isCompleted }: SessionType) => {
     } else {
       bgColor.value = withTiming(tertiary);
     }
-  }, [isCompleted]);
+  }, [isCompleted, colorScheme]);
 
   return (
     <Animated.View
