@@ -10,7 +10,7 @@ import {
 import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
 import { colors } from "@/constants/colors";
-import { useColorScheme } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,7 +23,8 @@ const RootLayout = () => {
   const colorScheme = useColorScheme() || "light";
   const { background } = colors[colorScheme];
 
-  NavigationBar.setBackgroundColorAsync(background);
+  Platform.OS === "android" &&
+    NavigationBar.setBackgroundColorAsync(background);
 
   useEffect(() => {
     if (loaded) {
