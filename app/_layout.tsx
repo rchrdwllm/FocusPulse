@@ -1,16 +1,17 @@
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
-import "../global.css";
+import { ThemeProvider } from "@/components/theme/theme-context";
+import { colors } from "@/constants/colors";
 import {
-  useFonts,
   Inter_400Regular,
-  Inter_700Bold,
   Inter_500Medium,
+  Inter_700Bold,
+  useFonts,
 } from "@expo-google-fonts/inter";
 import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
-import { colors } from "@/constants/colors";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
 import { Platform, useColorScheme } from "react-native";
+import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,13 +38,13 @@ const RootLayout = () => {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <Stack initialRouteName="(home)">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
       </Stack>
       <PortalHost />
-    </>
+    </ThemeProvider>
   );
 };
 
