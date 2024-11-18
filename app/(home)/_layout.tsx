@@ -1,7 +1,7 @@
 import NavTab from "@/components/ui/nav-tab";
 import { colors } from "@/constants/colors";
 import { Tabs } from "expo-router";
-import { Circle, Clock, Settings2, SquarePen } from "lucide-react-native";
+import { Circle, Clock, Settings2, SquarePen, CircleUserRound } from "lucide-react-native";
 import { useColorScheme } from "react-native";
 
 const HomeLayout = () => {
@@ -66,6 +66,18 @@ const HomeLayout = () => {
           ),
         }}
         name="asdf"
+      />
+      <Tabs.Screen
+        options={{
+          headerShown: false,
+          title: "User Profile",
+          tabBarIcon: ({ focused }) => (
+            <NavTab>
+              <CircleUserRound size={28} color={focused ? primary : muted} />
+            </NavTab>
+          ),
+        }}
+        name="profile-screen"
       />
     </Tabs>
   );
