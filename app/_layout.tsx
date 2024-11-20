@@ -11,6 +11,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
 import { colors } from "@/constants/colors";
 import { useColorScheme } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { ThemeProvider } from "@/components/theme/theme-context";
 
 SplashScreen.preventAutoHideAsync();
@@ -38,6 +39,7 @@ const RootLayout = () => {
 
   return (
     <ThemeProvider>
+      <StatusBar />
       <Stack initialRouteName="(home)">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
