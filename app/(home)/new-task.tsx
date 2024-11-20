@@ -1,25 +1,23 @@
-import { Pressable, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
-import { H3 } from "@/components/ui/typography";
-import { Controller, useForm } from "react-hook-form";
-import { taskSchema } from "@/schemas/task-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import SessionPickerModal from "@/components/modals/session-picker-modal";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { Text } from "@/components/ui/text";
+import { H3 } from "@/components/ui/typography";
+import { buttonSpring } from "@/constants/spring";
+import { taskSchema } from "@/schemas/task-schema";
+import { createTask } from "@/server/task";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Pressable, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { buttonSpring } from "@/constants/spring";
-import { Button } from "@/components/ui/button";
-import SessionPickerModal from "@/components/modals/session-picker-modal";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { v4 } from "uuid";
-import { Timestamp } from "firebase/firestore";
-import { createTask } from "@/server/task";
+import * as z from "zod";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

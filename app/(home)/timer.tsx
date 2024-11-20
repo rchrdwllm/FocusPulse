@@ -1,24 +1,24 @@
-import { Text } from "@/components/ui/text";
+import SessionPickerModal from "@/components/modals/session-picker-modal";
+import TimePickerModal from "@/components/modals/time-picker-modal";
+import { Button } from "@/components/ui/button";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import { Text } from "@/components/ui/text";
 import { H3 } from "@/components/ui/typography";
-import { Pressable, View } from "react-native";
+import { buttonSpring } from "@/constants/spring";
+import { formatDuration } from "@/lib/utils";
+import { timerSchema } from "@/schemas/timer-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Pressable, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { buttonSpring } from "@/constants/spring";
-import TimePickerModal from "@/components/modals/time-picker-modal";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button } from "@/components/ui/button";
-import { router } from "expo-router";
-import { formatDuration } from "@/lib/utils";
-import SessionPickerModal from "@/components/modals/session-picker-modal";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { timerSchema } from "@/schemas/timer-schema";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

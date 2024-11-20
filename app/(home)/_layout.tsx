@@ -3,10 +3,10 @@ import { colors } from "@/constants/colors";
 import { Tabs } from "expo-router";
 import {
   Circle,
+  CircleUserRound,
   Clock,
   Settings2,
   SquarePen,
-  CircleUserRound,
 } from "lucide-react-native";
 import { useColorScheme } from "react-native";
 

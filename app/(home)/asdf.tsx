@@ -1,7 +1,6 @@
 import { useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { H3 } from "@/components/ui/typography";
-import { Picker } from "@react-native-picker/picker";
 import { CircleCheck, Palette, Timer } from "lucide-react-native";
 import React, { useState } from "react";
 import { Text, View } from "react-native";

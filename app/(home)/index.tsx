@@ -1,15 +1,14 @@
-import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import CountdownTimer from "@/components/countdown-timer/countdown-timer";
+import Task from "@/components/tasks/task";
 import { Input } from "@/components/ui/input";
-import { View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { TimerState } from "@/types";
+import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import { Text } from "@/components/ui/text";
 import { H1, H3 } from "@/components/ui/typography";
 import { useTasks } from "@/hooks/useTasks";
-import { ScrollView } from "react-native";
-import { Text } from "@/components/ui/text";
-import Task from "@/components/tasks/task";
+import { TimerState } from "@/types";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
 
 const HomeScreen = () => {
   const {
