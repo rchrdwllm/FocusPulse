@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { formatDuration } from "@/lib/utils";
 import SessionPickerModal from "@/components/modals/session-picker-modal";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { timerSchema } from "@/schemas/timer-schema";
@@ -26,9 +26,6 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const NewTimerScreen = () => {
   const form = useForm<z.infer<typeof timerSchema>>({
     resolver: zodResolver(timerSchema),
-    defaultValues: {
-      task: "",
-    },
   });
   const [showFocusPicker, setShowFocusPicker] = useState(false);
   const [showShortPicker, setShowShortPicker] = useState(false);
@@ -131,29 +128,9 @@ const NewTimerScreen = () => {
           className="flex-1 gap-12"
         >
           <View className="mt-12">
-            <H3 className="text-center">New timer</H3>
+            <H3 className="text-center">Timer</H3>
           </View>
           <View className="gap-4">
-            <Controller
-              control={form.control}
-              rules={{
-                required: true,
-              }}
-              name="task"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  placeholder="Task: Write an article"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-              )}
-            />
-            {form.formState.errors.task && (
-              <Text className="text-red-500">
-                {form.formState.errors.task.message}
-              </Text>
-            )}
             <AnimatedPressable
               onPress={() => setShowFocusPicker(!showFocusPicker)}
               style={{

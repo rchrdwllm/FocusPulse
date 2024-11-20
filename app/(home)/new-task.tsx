@@ -17,7 +17,12 @@ import { buttonSpring } from "@/constants/spring";
 import { Button } from "@/components/ui/button";
 import SessionPickerModal from "@/components/modals/session-picker-modal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { v4 } from "uuid";
+import { Timestamp } from "firebase/firestore";
+import { createTask } from "@/server/task";
+
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 const NewTaskScreen = () => {
   const [showSessionPicker, setShowSessionPicker] = useState(false);
   const [requiredSessions, setRequiredSessions] = useState(1);
@@ -30,6 +35,7 @@ const NewTaskScreen = () => {
       task: "",
     },
   });
+
   useEffect(() => {
     if (showSessionPicker) {
       containerScale.value = withTiming(0.8);
@@ -39,9 +45,19 @@ const NewTaskScreen = () => {
       containerOpacity.value = withTiming(1);
     }
   }, [showSessionPicker]);
-  const handleSubmit = (data: z.infer<typeof taskSchema>) => {
-    // TODO: Add task to database
+
+  const handleSubmit = async (data: z.infer<typeof taskSchema>) => {
+    const { success, error } = await createTask({
+      title: data.task,
+      requiredSessions,
+    });
+
+    console.log({
+      success,
+      error,
+    });
   };
+
   return (
     <GestureHandlerRootView>
       {showSessionPicker && (

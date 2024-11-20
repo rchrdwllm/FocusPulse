@@ -2,12 +2,11 @@ import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import CountdownTimer from "@/components/countdown-timer/countdown-timer";
 import { Input } from "@/components/ui/input";
 import { View } from "react-native";
-import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
-import Sessions from "@/components/countdown-timer/sessions";
 import { useEffect, useState } from "react";
 import { TimerState } from "@/types";
 import { H1 } from "@/components/ui/typography";
+import { useTasks } from "@/hooks/useTasks";
 
 const HomeScreen = () => {
   const {
@@ -20,10 +19,15 @@ const HomeScreen = () => {
   } = useLocalSearchParams();
   const [timerState, setTimerState] = useState<TimerState>("focus");
   const [currentTask, setCurrentTask] = useState("");
+  const tasks = useTasks();
 
   useEffect(() => {
     setCurrentTask(task as string);
   }, [task]);
+
+  useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
 
   return (
     <SafeAreaWrapper className="bg-background px-4">
