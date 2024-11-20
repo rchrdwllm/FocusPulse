@@ -1,7 +1,13 @@
 import NavTab from "@/components/ui/nav-tab";
 import { colors } from "@/constants/colors";
 import { Tabs } from "expo-router";
-import { Circle, Clock, Settings2, SquarePen, CircleUserRound } from "lucide-react-native";
+import {
+  Circle,
+  Clock,
+  Settings2,
+  SquarePen,
+  CircleUserRound,
+} from "lucide-react-native";
 import { useColorScheme } from "react-native";
 
 const HomeLayout = () => {
@@ -13,7 +19,9 @@ const HomeLayout = () => {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: background,
-          borderTopColor: "transparent",
+          borderTopWidth: 0,
+          height: 60,
+          paddingTop: 8,
         },
         tabBarShowLabel: false,
       }}

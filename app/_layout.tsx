@@ -9,6 +9,7 @@ import {
 import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
 import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Platform, useColorScheme } from "react-native";
 import "../global.css";
@@ -39,6 +40,7 @@ const RootLayout = () => {
 
   return (
     <ThemeProvider>
+      <StatusBar />
       <Stack initialRouteName="(home)">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
