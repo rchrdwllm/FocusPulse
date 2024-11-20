@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Task } from "react-native";
+import { Task } from "@/types";
 
 export function useTasks() {
   const currentUser = getCurrentUser();

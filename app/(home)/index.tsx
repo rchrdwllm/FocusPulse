@@ -5,8 +5,11 @@ import { View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { TimerState } from "@/types";
-import { H1 } from "@/components/ui/typography";
+import { H1, H3 } from "@/components/ui/typography";
 import { useTasks } from "@/hooks/useTasks";
+import { ScrollView } from "react-native";
+import { Text } from "@/components/ui/text";
+import Task from "@/components/tasks/task";
 
 const HomeScreen = () => {
   const {
@@ -19,20 +22,19 @@ const HomeScreen = () => {
   } = useLocalSearchParams();
   const [timerState, setTimerState] = useState<TimerState>("focus");
   const [currentTask, setCurrentTask] = useState("");
-  const tasks = useTasks();
+  const { tasks } = useTasks();
 
   useEffect(() => {
     setCurrentTask(task as string);
   }, [task]);
 
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
-
   return (
     <SafeAreaWrapper className="bg-background px-4">
-      <View className="flex-1 justify-center items-center gap-12">
-        <View className="w-full items-center px-12 gap-12">
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="gap-12 justify-center items-center"
+      >
+        <View className="w-full items-center px-12 gap-12 mt-12">
           <H1 className="text-center text-3xl">
             {timerState === "focus"
               ? "Focus!"
@@ -55,7 +57,18 @@ const HomeScreen = () => {
           timerState={timerState}
           setTimerState={setTimerState}
         />
-      </View>
+        <View className="w-full">
+          <H3 className="text-center">Tasks</H3>
+          <Text className="text-center text-muted">
+            You can view your tasks here
+          </Text>
+          <View className="gap-1 mt-4">
+            {tasks.map((task) => (
+              <Task key={task.id} {...task} />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaWrapper>
   );
 };
