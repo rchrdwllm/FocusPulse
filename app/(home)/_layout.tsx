@@ -1,6 +1,6 @@
 import { useColorScheme } from "react-native";
 import { Tabs } from "expo-router";
-import { Circle, Clock } from "lucide-react-native";
+import { Circle, Clock, SquarePen } from "lucide-react-native";
 import { colors } from "@/constants/colors";
 import NavTab from "@/components/ui/nav-tab";
 
@@ -34,7 +34,7 @@ const HomeLayout = () => {
       <Tabs.Screen
         options={{
           headerShown: false,
-          title: "New",
+          title: "New timer",
           tabBarIcon: ({ focused }) => (
             <NavTab>
               <Clock size={28} color={focused ? primary : muted} />
@@ -42,6 +42,18 @@ const HomeLayout = () => {
           ),
         }}
         name="new-timer"
+      />
+      <Tabs.Screen
+        options={{
+          headerShown: false,
+          title: "New task",
+          tabBarIcon: ({ focused }) => (
+            <NavTab>
+              <SquarePen size={28} color={focused ? primary : muted} />
+            </NavTab>
+          ),
+        }}
+        name="new-task"
       />
     </Tabs>
   );
