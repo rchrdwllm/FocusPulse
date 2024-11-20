@@ -49,7 +49,7 @@ const HomeLayout = () => {
             </NavTab>
           ),
         }}
-        name="new-timer"
+        name="timer"
       />
       <Tabs.Screen
         options={{
