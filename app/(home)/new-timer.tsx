@@ -131,7 +131,7 @@ const NewTimerScreen = () => {
           className="flex-1 gap-12"
         >
           <View className="mt-12">
-            <H3 className="text-center">Timer Settings</H3>
+            <H3 className="text-center">New timer</H3>
           </View>
           <View className="gap-4">
             <Controller

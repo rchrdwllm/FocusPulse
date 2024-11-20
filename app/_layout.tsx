@@ -10,7 +10,8 @@ import {
 import { PortalHost } from "@rn-primitives/portal";
 import * as NavigationBar from "expo-navigation-bar";
 import { colors } from "@/constants/colors";
-import { Platform, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
+import { ThemeProvider } from "@/components/theme/theme-context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,8 +24,7 @@ const RootLayout = () => {
   const colorScheme = useColorScheme() || "light";
   const { background } = colors[colorScheme];
 
-  Platform.OS === "android" &&
-    NavigationBar.setBackgroundColorAsync(background);
+  NavigationBar.setBackgroundColorAsync(background);
 
   useEffect(() => {
     if (loaded) {
@@ -37,13 +37,13 @@ const RootLayout = () => {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <Stack initialRouteName="(home)">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
       </Stack>
       <PortalHost />
-    </>
+    </ThemeProvider>
   );
 };
 
