@@ -25,7 +25,7 @@ const HomeLayout = () => {
         },
         tabBarShowLabel: false,
       }}
-      initialRouteName="index"
+      initialRouteName="(index)"
     >
       <Tabs.Screen
         options={{
@@ -37,19 +37,7 @@ const HomeLayout = () => {
             </NavTab>
           ),
         }}
-        name="index"
-      />
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "New timer",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <Clock size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="timer"
+        name="(index)"
       />
       <Tabs.Screen
         options={{
@@ -62,6 +50,18 @@ const HomeLayout = () => {
           ),
         }}
         name="new-task"
+      />
+      <Tabs.Screen
+        options={{
+          headerShown: false,
+          title: "New timer",
+          tabBarIcon: ({ focused }) => (
+            <NavTab>
+              <Clock size={28} color={focused ? primary : muted} />
+            </NavTab>
+          ),
+        }}
+        name="timer"
       />
       <Tabs.Screen
         options={{

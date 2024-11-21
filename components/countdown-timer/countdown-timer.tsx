@@ -5,9 +5,11 @@ import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
 import { Pause, Play } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { TimerState } from "@/types";
+import { Task, TimerState } from "@/types";
 import Sessions from "./sessions";
 import { createSessions } from "@/lib/utils";
+import { useTasks } from "@/hooks/useTasks";
+import { incrementTaskSessions } from "@/server/task";
 
 type CountdownTimerProps = {
   focusDuration: number;
@@ -17,6 +19,8 @@ type CountdownTimerProps = {
   sessions: number;
   timerState: TimerState;
   setTimerState: (state: TimerState) => void;
+  tasks: Task[];
+  currentTask: Task;
 };
 
 const CountdownTimer = ({
@@ -27,6 +31,7 @@ const CountdownTimer = ({
   sessions,
   timerState,
   setTimerState,
+  currentTask,
 }: CountdownTimerProps) => {
   const colorScheme = useColorScheme() as "light" | "dark";
   const { buttonForeground } = colors[colorScheme];
@@ -72,6 +77,10 @@ const CountdownTimer = ({
     setSessionArr(updatedSessions);
   }, [sessionCount]);
 
+  const handleComplete = async () => {
+    await incrementTaskSessions(currentTask.id);
+  };
+
   return (
     <>
       {timerState === "focus" ? (
@@ -88,6 +97,7 @@ const CountdownTimer = ({
           colorsTime={[focusDuration, 5, 0]}
           trailColor={colors[colorScheme].tertiary as any}
           onComplete={() => {
+            handleComplete();
             setSessionCount((prev) => prev + 1);
             setTimerKey((prev) => prev + 1);
             setTimerState(sessionCount + 1 === sessions ? "long" : "short");

@@ -6,26 +6,20 @@ import { Text } from "@/components/ui/text";
 import { H1, H3 } from "@/components/ui/typography";
 import { useTasks } from "@/hooks/useTasks";
 import { TimerState } from "@/types";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 
 const HomeScreen = () => {
-  const {
-    focusDuration,
-    shortDuration,
-    longDuration,
-    newTimerKey,
-    sessions,
-    task,
-  } = useLocalSearchParams();
+  const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
+    useLocalSearchParams();
   const [timerState, setTimerState] = useState<TimerState>("focus");
-  const [currentTask, setCurrentTask] = useState("");
   const { tasks } = useTasks();
+  const [currentTask, setCurrentTask] = useState(tasks[0]);
 
   useEffect(() => {
-    setCurrentTask(task as string);
-  }, [task]);
+    setCurrentTask(tasks[0]);
+  }, [tasks]);
 
   return (
     <SafeAreaWrapper className="bg-background px-4">
@@ -42,9 +36,8 @@ const HomeScreen = () => {
                 : "Enjoy a long break"}
           </H1>
           <Input
-            value={currentTask}
-            onChange={(e) => setCurrentTask(e.nativeEvent.text)}
-            className="w-full"
+            value={currentTask?.title}
+            className="w-full pointer-events-none"
           />
         </View>
         <CountdownTimer
@@ -55,8 +48,10 @@ const HomeScreen = () => {
           sessions={parseInt(sessions as string)}
           timerState={timerState}
           setTimerState={setTimerState}
+          tasks={tasks}
+          currentTask={currentTask}
         />
-        <View className="w-full">
+        <View className="w-full pb-8">
           <H3 className="text-center">Tasks</H3>
           <Text className="text-center text-muted">
             You can view your tasks here
@@ -65,6 +60,13 @@ const HomeScreen = () => {
             {tasks.map((task) => (
               <Task key={task.id} {...task} />
             ))}
+          </View>
+          <View className="items-center mt-8">
+            <Link href="/completed-tasks">
+              <Text className="text-center text-muted">
+                See completed tasks
+              </Text>
+            </Link>
           </View>
         </View>
       </ScrollView>

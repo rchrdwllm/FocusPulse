@@ -6,11 +6,8 @@ import { Text } from "@/components/ui/text";
 import { H3 } from "@/components/ui/typography";
 import { buttonSpring } from "@/constants/spring";
 import { formatDuration } from "@/lib/utils";
-import { timerSchema } from "@/schemas/timer-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Pressable, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, {
@@ -18,17 +15,10 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import * as z from "zod";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const NewTimerScreen = () => {
-  const form = useForm<z.infer<typeof timerSchema>>({
-    resolver: zodResolver(timerSchema),
-    defaultValues: {
-      task: "",
-    },
-  });
   const [showFocusPicker, setShowFocusPicker] = useState(false);
   const [showShortPicker, setShowShortPicker] = useState(false);
   const [showLongPicker, setShowLongPicker] = useState(false);
@@ -72,13 +62,12 @@ const NewTimerScreen = () => {
     }
   }, [showFocusPicker, showShortPicker, showLongPicker, showSessionPicker]);
 
-  const handleSubmit = (data: z.infer<typeof timerSchema>) => {
+  const handleSubmit = () => {
     setNewTimerKey(newTimerKey + 1);
 
     router.push({
-      pathname: "/(home)",
+      pathname: "/(home)/(index)",
       params: {
-        task: data.task,
         focusDuration,
         shortDuration,
         longDuration,
@@ -199,7 +188,7 @@ const NewTimerScreen = () => {
             </AnimatedPressable>
           </View>
         </Animated.View>
-        <Button onPress={form.handleSubmit(handleSubmit)}>
+        <Button onPress={handleSubmit}>
           <Text>Start</Text>
         </Button>
       </SafeAreaWrapper>
