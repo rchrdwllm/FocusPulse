@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/text";
 import { H3 } from "@/components/ui/typography";
 import { buttonSpring } from "@/constants/spring";
 import { formatDuration } from "@/lib/utils";
+import { initUserSettings } from "@/server/settings";
 import { router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
@@ -50,6 +51,10 @@ const NewTimerScreen = () => {
   const {
     currentColors: { background, input, border, muted, foreground, primary },
   } = useTheme();
+
+  useEffect(() => {
+    initUserSettings();
+  }, []);
 
   useEffect(() => {
     if (
@@ -127,7 +132,7 @@ const NewTimerScreen = () => {
           }}
           className="flex-1 gap-12"
         >
-          <View className="mt-12">
+          <View>
             <H3 className="text-center">Timer</H3>
           </View>
           <View className="gap-4">

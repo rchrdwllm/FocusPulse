@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-
 const ProfileScreen: React.FC = () => {
-  const { theme, setTheme, currentColors } = useTheme();
-  const { background, foreground, primary, tertiary, muted } = currentColors;
+  const { currentColors } = useTheme();
+  const { background, foreground } = currentColors;
   const [image, setImage] = useState<string | null>(null); // Correct destructuring
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -25,75 +25,78 @@ const ProfileScreen: React.FC = () => {
       aspect: [4, 3],
       quality: 1,
     });
+
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
+
   return (
     <ThemeProvider>
       <GestureHandlerRootView>
         <View style={{ flex: 1, backgroundColor: background }}>
-      <SafeAreaWrapper className="px-4 pb-8">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View className="flex-1 gap-1 mt-20">
-            <View style={styles.iconContainer}>
-              {image ? (
-                <Image source={{ uri: image }} style={styles.image} />
-              ) : (
-                <CircleUserRound
-                  size={200}
-                  color={foreground}
-                  strokeWidth={1}
-                />
-              )}
-              <TouchableOpacity onPress={pickImage}>
-                <Pencil
-                  size={35}
-                  color={foreground}
-                  strokeWidth={2}
-                  style={styles.iconOverlap}
-                />
-              </TouchableOpacity>
-            </View>
-            <Text className="text-center text-4xl text-[#ffffff] font-bold">
-              Hello, user!
-            </Text>
-            <Text className="text-center text-base text-[#827D95]">
-              Joined November 2024
-            </Text>
-            <View style={styles.bio}>
-              <Text style={styles.bioText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                mattis magna in leo facilisis fermentum. Cras lorem dolor,
-                egestas in metus et, porttitor vehicula libero. Sed tincidunt
-                tortor posuere, consequat velit hendrerit, iaculis erat. Duis at
-                mattis nisl.
-              </Text>
-            </View>
-            <View style={styles.streak} />
-            <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                mattis magna in leo facilisis fermentum. Cras lorem dolor,
-                egestas in metus et, porttitor vehicula libero. Sed tincidunt
-                tortor posuere, consequat velit hendrerit, iaculis erat. Duis at
-                mattis nisl. Quisque odio nunc, egestas eu pellentesque
-                vulputate, sollicitudin gravida ante. Aliquam nec placerat
-                velit. Sed blandit posuere ante vel ornare. Sed sodales
-                vulputate enim, vel placerat ante pellentesque eget. Suspendisse
-                ex urna, sagittis eget fringilla eget, dapibus ut ligula.
-                Aliquam a felis tincidunt, porttitor nisl sed, imperdiet neque.
-                Pellentesque viverra velit sit amet mauris molestie fermentum.
-                In hac habitasse platea dictumst. Class aptent taciti sociosqu
-                ad litora torquent per conubia nostra, per inceptos himenaeos.
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
+          <SafeAreaWrapper className="px-4 pb-8">
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              <View className="flex-1 gap-1">
+                <View style={styles.iconContainer}>
+                  {image ? (
+                    <Image source={{ uri: image }} style={styles.image} />
+                  ) : (
+                    <CircleUserRound
+                      size={200}
+                      color={foreground}
+                      strokeWidth={1}
+                    />
+                  )}
+                  <TouchableOpacity onPress={pickImage}>
+                    <Pencil
+                      size={35}
+                      color={foreground}
+                      strokeWidth={2}
+                      style={styles.iconOverlap}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text className="text-center text-4xl text-[#ffffff] font-bold">
+                  Hello, user!
+                </Text>
+                <Text className="text-center text-base text-[#827D95]">
+                  Joined November 2024
+                </Text>
+                <View style={styles.bio}>
+                  <Text style={styles.bioText}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Cras mattis magna in leo facilisis fermentum. Cras lorem
+                    dolor, egestas in metus et, porttitor vehicula libero. Sed
+                    tincidunt tortor posuere, consequat velit hendrerit, iaculis
+                    erat. Duis at mattis nisl.
+                  </Text>
+                </View>
+                <View style={styles.streak} />
+                <View style={styles.placeholder}>
+                  <Text style={styles.placeholderText}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Cras mattis magna in leo facilisis fermentum. Cras lorem
+                    dolor, egestas in metus et, porttitor vehicula libero. Sed
+                    tincidunt tortor posuere, consequat velit hendrerit, iaculis
+                    erat. Duis at mattis nisl. Quisque odio nunc, egestas eu
+                    pellentesque vulputate, sollicitudin gravida ante. Aliquam
+                    nec placerat velit. Sed blandit posuere ante vel ornare. Sed
+                    sodales vulputate enim, vel placerat ante pellentesque eget.
+                    Suspendisse ex urna, sagittis eget fringilla eget, dapibus
+                    ut ligula. Aliquam a felis tincidunt, porttitor nisl sed,
+                    imperdiet neque. Pellentesque viverra velit sit amet mauris
+                    molestie fermentum. In hac habitasse platea dictumst. Class
+                    aptent taciti sociosqu ad litora torquent per conubia
+                    nostra, per inceptos himenaeos.
+                  </Text>
+                </View>
+              </View>
+            </ScrollView>
           </SafeAreaWrapper>
-          </View>
+        </View>
       </GestureHandlerRootView>
-      </ThemeProvider>
+    </ThemeProvider>
   );
 };
 

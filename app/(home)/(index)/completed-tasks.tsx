@@ -13,10 +13,7 @@ const CompletedTasksScreen = () => {
 
   return (
     <SafeAreaWrapper style={{ backgroundColor: background }}>
-      <ScrollView
-        contentContainerClassName="pt-12 px-4 gap-6"
-        className="flex-1"
-      >
+      <ScrollView contentContainerClassName="px-4 gap-6" className="flex-1">
         <H3 className="text-center">Completed Tasks</H3>
         <View className="gap-1">
           {tasks.map((task) => (

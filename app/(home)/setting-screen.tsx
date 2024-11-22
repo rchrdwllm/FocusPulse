@@ -1,6 +1,11 @@
 import { useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { H3 } from "@/components/ui/typography";
+import { useSettings } from "@/hooks/useSettings";
+import {
+  changeAutoStartBreaks,
+  changeAutoStartPomodoro,
+} from "@/server/settings";
 import { Picker } from "@react-native-picker/picker";
 import { CircleCheck, Palette, Timer } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
@@ -10,10 +15,15 @@ import { GestureHandlerRootView, Switch } from "react-native-gesture-handler";
 type Theme = "light" | "dark" | "system";
 
 const SettingsScreen = () => {
-  const [autoStartBreaks, setAutoStartBreaks] = useState(false);
-  const [autoStartPomodoro, setAutoStartPomodoro] = useState(false);
-  const [autoCheckTasks, setAutoCheckTasks] = useState(false);
-  const [autoSwitchTasks, setAutoSwitchTasks] = useState(false);
+  const { settings, loading, error } = useSettings();
+  const [autoStartBreaks, setAutoStartBreaks] = useState(
+    loading ? true : settings?.autoStartBreaks
+  );
+  const [autoStartPomodoro, setAutoStartPomodoro] = useState(
+    loading ? true : settings?.autoStartPomodoro
+  );
+  const [autoCheckTasks, setAutoCheckTasks] = useState(loading);
+  const [autoSwitchTasks, setAutoSwitchTasks] = useState(loading);
 
   const { theme, setTheme, currentColors } = useTheme();
   const { foreground, primary, muted, background } = currentColors;
@@ -22,15 +32,44 @@ const SettingsScreen = () => {
     StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content");
   }, [theme, currentColors]);
 
+  if (error) throw new Error(error.message);
+
+  useEffect(() => {
+    if (settings) {
+      setAutoStartBreaks(settings.autoStartBreaks);
+      setAutoStartPomodoro(settings.autoStartPomodoro);
+    }
+  }, [settings]);
+
   const handleThemeChange = (value: Theme) => {
     setTheme(value);
+  };
+
+  const handleAutoStartBreaksChange = async (value: boolean) => {
+    setAutoStartBreaks(value);
+
+    const { error } = await changeAutoStartBreaks();
+
+    if (error) {
+      setAutoStartBreaks(!value);
+    }
+  };
+
+  const handleAutoStartPomodoro = async (value: boolean) => {
+    setAutoStartPomodoro(value);
+
+    const { error } = await changeAutoStartPomodoro();
+
+    if (error) {
+      setAutoStartPomodoro(!value);
+    }
   };
 
   return (
     <GestureHandlerRootView>
       <View style={{ flex: 1, backgroundColor: background }}>
         <SafeAreaWrapper className={`px-4 pb-8`}>
-          <View className="flex-1 gap-6 mt-12">
+          <View className="flex-1 gap-6 ">
             <H3 className="text-center">Settings</H3>
             <View className="mt-4">
               <View className="flex-row items-center gap-2 mb-2">
@@ -49,16 +88,18 @@ const SettingsScreen = () => {
                 <Text style={{ color: foreground }}>Auto Start Breaks</Text>
                 <Switch
                   value={autoStartBreaks}
-                  onValueChange={setAutoStartBreaks}
+                  onValueChange={handleAutoStartBreaksChange}
                   trackColor={{ false: muted, true: primary }}
+                  thumbColor={"white"}
                 />
               </View>
               <View className="flex-row justify-between items-center mb-1">
                 <Text style={{ color: foreground }}>Auto Start Pomodoro</Text>
                 <Switch
                   value={autoStartPomodoro}
-                  onValueChange={setAutoStartPomodoro}
+                  onValueChange={handleAutoStartPomodoro}
                   trackColor={{ false: muted, true: primary }}
+                  thumbColor={"white"}
                 />
               </View>
             </View>
@@ -81,6 +122,7 @@ const SettingsScreen = () => {
                   value={autoCheckTasks}
                   onValueChange={setAutoCheckTasks}
                   trackColor={{ false: muted, true: primary }}
+                  thumbColor={"white"}
                 />
               </View>
               <View className="flex-row justify-between items-center mb-1">
@@ -89,6 +131,7 @@ const SettingsScreen = () => {
                   value={autoSwitchTasks}
                   onValueChange={setAutoSwitchTasks}
                   trackColor={{ false: muted, true: primary }}
+                  thumbColor={"white"}
                 />
               </View>
             </View>

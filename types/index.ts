@@ -16,3 +16,11 @@ export type Task = {
   createdAt: Timestamp;
   userId: string;
 };
+
+export type Settings = {
+  id: string;
+  autoStartBreaks: boolean;
+  autoStartPomodoro: boolean;
+  lastModified: Timestamp;
+  userId: string;
+};

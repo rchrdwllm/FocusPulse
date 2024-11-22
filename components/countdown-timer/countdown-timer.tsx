@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import { Task, TimerState } from "@/types";
 import Sessions from "./sessions";
 import { createSessions } from "@/lib/utils";
-import { useTasks } from "@/hooks/useTasks";
 import { incrementTaskSessions } from "@/server/task";
 import { useTheme } from "../theme/theme-context";
+import { useSettings } from "@/hooks/useSettings";
 
 type CountdownTimerProps = {
   focusDuration: number;
@@ -43,6 +43,21 @@ const CountdownTimer = ({
   const {
     currentColors: { secondary },
   } = useTheme();
+  const { settings } = useSettings();
+
+  useEffect(() => {
+    if (timerState === "short" || timerState === "long") {
+      if (settings) {
+        setIsPlaying(settings.autoStartBreaks);
+      }
+    }
+
+    if (timerState === "focus") {
+      if (settings) {
+        setIsPlaying(settings.autoStartPomodoro);
+      }
+    }
+  }, [timerState, settings]);
 
   const resetSessions = () => {
     setSessionArr(createSessions(sessions));

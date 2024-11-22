@@ -96,7 +96,7 @@ const NewTaskScreen = () => {
           }}
           className="flex-1 gap-12"
         >
-          <View className="mt-12">
+          <View>
             <H3 className="text-center">New task</H3>
           </View>
           <View className="gap-4">

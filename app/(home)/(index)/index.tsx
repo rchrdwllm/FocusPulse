@@ -36,7 +36,7 @@ const HomeScreen = () => {
         className="flex-1"
         contentContainerClassName="px-4 gap-12 justify-center items-center"
       >
-        <View className="w-full items-center px-12 gap-12 mt-12">
+        <View className="w-full items-center px-12 gap-12 mt-8">
           <H1 className="text-center text-3xl">
             {timerState === "focus"
               ? "Focus!"
