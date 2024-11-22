@@ -18,83 +18,88 @@ const Layout: React.FC = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: background }}>
-      <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
       <SafeAreaWrapper>
-    <Tabs
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: background,
-          borderTopWidth: 0,
-          height: 60,
-          paddingTop: 8,
-        },
-        tabBarShowLabel: false,
-      }}
-      initialRouteName="(index)"
-    >
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "Timer",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <Circle size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="(index)"
-      />
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "New task",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <SquarePen size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="new-task"
-      />
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "New timer",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <Clock size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="timer"
-      />
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "Settings",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <Settings2 size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="setting-screen"
-      />
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          title: "User Profile",
-          tabBarIcon: ({ focused }) => (
-            <NavTab>
-              <CircleUserRound size={28} color={focused ? primary : muted} />
-            </NavTab>
-          ),
-        }}
-        name="profile-screen"
-      />
+        <Tabs
+          screenOptions={{
+            tabBarStyle: {
+              backgroundColor: background,
+              borderTopWidth: 0,
+              height: 60,
+              paddingTop: 8,
+            },
+            tabBarShowLabel: false,
+          }}
+          initialRouteName="(index)"
+        >
+          <Tabs.Screen
+            options={{
+              headerShown: false,
+              title: "Timer",
+              tabBarIcon: ({ focused }) => (
+                <NavTab>
+                  <Circle size={28} color={focused ? primary : muted} />
+                </NavTab>
+              ),
+            }}
+            name="(index)"
+          />
+          <Tabs.Screen
+            options={{
+              headerShown: false,
+              title: "New task",
+              tabBarIcon: ({ focused }) => (
+                <NavTab>
+                  <SquarePen size={28} color={focused ? primary : muted} />
+                </NavTab>
+              ),
+            }}
+            name="new-task"
+          />
+          <Tabs.Screen
+            options={{
+              headerShown: false,
+              title: "New timer",
+              tabBarIcon: ({ focused }) => (
+                <NavTab>
+                  <Clock size={28} color={focused ? primary : muted} />
+                </NavTab>
+              ),
+            }}
+            name="timer"
+          />
+          <Tabs.Screen
+            options={{
+              headerShown: false,
+              title: "Settings",
+              tabBarIcon: ({ focused }) => (
+                <NavTab>
+                  <Settings2 size={28} color={focused ? primary : muted} />
+                </NavTab>
+              ),
+            }}
+            name="setting-screen"
+          />
+          <Tabs.Screen
+            options={{
+              headerShown: false,
+              title: "User Profile",
+              tabBarIcon: ({ focused }) => (
+                <NavTab>
+                  <CircleUserRound
+                    size={28}
+                    color={focused ? primary : muted}
+                  />
+                </NavTab>
+              ),
+            }}
+            name="profile-screen"
+          />
         </Tabs>
       </SafeAreaWrapper>
-      </View>
+    </View>
   );
 };
 

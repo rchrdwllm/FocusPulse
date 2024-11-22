@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+const streak = require("@/assets/images/streak.png");
 
 const ProfileScreen: React.FC = () => {
   const { currentColors } = useTheme();
@@ -72,7 +73,20 @@ const ProfileScreen: React.FC = () => {
                     erat. Duis at mattis nisl.
                   </Text>
                 </View>
-                <View style={styles.streak} />
+                <View
+                  style={styles.streak}
+                  className="flex-row items-center justify-center"
+                >
+                  <Image source={streak} style={styles.streakIcon} />
+                  <View>
+                    <Text className="text-3xl text-[#ffffff] font-bold">
+                      Keep your streak going!
+                    </Text>
+                    <Text className="text-base text-[#ffffff]">
+                      12 days and counting
+                    </Text>
+                  </View>
+                </View>
                 <View style={styles.placeholder}>
                   <Text style={styles.placeholderText}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -124,6 +138,11 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,
   },
+  streakIcon: {
+    width: 55,
+    height: 55,
+    objectFit: "contain",
+  },
   bio: {
     width: 390,
     height: 156,
@@ -140,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     maxWidth: "100%",
   },
+
   streak: {
     //PLACEHOLDER FOR STREAK FEATURE
     width: 390,
