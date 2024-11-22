@@ -23,6 +23,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { ScrollView } from "react-native";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -144,111 +145,118 @@ const NewTimerScreen = () => {
         style={{
           backgroundColor: background,
         }}
-        className="px-4 pb-8"
+        className="pb-8"
       >
         <Animated.View
           style={{
             transform: [{ scale: containerScale }],
             opacity: containerOpacity,
           }}
-          className="flex-1 gap-12"
+          className="flex-1"
         >
-          <View>
-            <H3 className="text-center">Timer</H3>
-          </View>
-          <View className="gap-4">
-            <AnimatedPressable
-              onPress={() => setShowFocusPicker(!showFocusPicker)}
-              style={{
-                transform: [{ scale: focusPressableScale }],
-                backgroundColor: input,
-                borderColor: border,
-              }}
-              onPressIn={() => {
-                focusPressableScale.value = withSpring(0.95, buttonSpring);
-              }}
-              onPressOut={() => {
-                focusPressableScale.value = withSpring(1, buttonSpring);
-              }}
-              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
-            >
-              <Text style={{ color: muted }}>Focus time</Text>
-              <Text>{formattedFocus}</Text>
-            </AnimatedPressable>
-            <AnimatedPressable
-              onPress={() => setShowShortPicker(!showShortPicker)}
-              style={{
-                transform: [{ scale: shortPressableScale }],
-                backgroundColor: input,
-                borderColor: border,
-              }}
-              onPressIn={() => {
-                shortPressableScale.value = withSpring(0.95, buttonSpring);
-              }}
-              onPressOut={() => {
-                shortPressableScale.value = withSpring(1, buttonSpring);
-              }}
-              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
-            >
-              <Text style={{ color: muted }}>Short break time</Text>
-              <Text>{formattedShort}</Text>
-            </AnimatedPressable>
-            <AnimatedPressable
-              onPress={() => setShowLongPicker(!showLongPicker)}
-              style={{
-                transform: [{ scale: longPressableScale }],
-                backgroundColor: input,
-                borderColor: border,
-              }}
-              onPressIn={() => {
-                longPressableScale.value = withSpring(0.95, buttonSpring);
-              }}
-              onPressOut={() => {
-                longPressableScale.value = withSpring(1, buttonSpring);
-              }}
-              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
-            >
-              <Text style={{ color: muted }}>Long break time</Text>
-              <Text>{formattedLong}</Text>
-            </AnimatedPressable>
-            <AnimatedPressable
-              onPress={() => setShowSessionPicker(!showSessionPicker)}
-              onPressIn={() => {
-                sessionPressableScale.value = withSpring(0.95, buttonSpring);
-              }}
-              onPressOut={() => {
-                sessionPressableScale.value = withSpring(1, buttonSpring);
-              }}
-              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
-              style={{
-                transform: [{ scale: sessionPressableScale }],
-                backgroundColor: input,
-                borderColor: border,
-              }}
-            >
-              <Text style={{ color: muted }}>Sessions</Text>
-              <Text>{formattedSessions}</Text>
-            </AnimatedPressable>
-          </View>
-          <View className="gap-4">
-            <View className="flex-row items-center gap-2 mb-2">
-              <Sparkles size={20} color={foreground} />
-              <H4>Available session presets</H4>
+          <ScrollView
+            className="flex-1"
+            contentContainerClassName="gap-12 px-4"
+          >
+            <View>
+              <H3 className="text-center">Timer</H3>
             </View>
             <View className="gap-4">
-              {sessionPresets.map((preset, index) => (
-                <SessionPreset
-                  key={index}
-                  {...preset}
-                  onPress={handlePresetSubmit}
-                />
-              ))}
+              <AnimatedPressable
+                onPress={() => setShowFocusPicker(!showFocusPicker)}
+                style={{
+                  transform: [{ scale: focusPressableScale }],
+                  backgroundColor: input,
+                  borderColor: border,
+                }}
+                onPressIn={() => {
+                  focusPressableScale.value = withSpring(0.95, buttonSpring);
+                }}
+                onPressOut={() => {
+                  focusPressableScale.value = withSpring(1, buttonSpring);
+                }}
+                className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+              >
+                <Text style={{ color: muted }}>Focus time</Text>
+                <Text>{formattedFocus}</Text>
+              </AnimatedPressable>
+              <AnimatedPressable
+                onPress={() => setShowShortPicker(!showShortPicker)}
+                style={{
+                  transform: [{ scale: shortPressableScale }],
+                  backgroundColor: input,
+                  borderColor: border,
+                }}
+                onPressIn={() => {
+                  shortPressableScale.value = withSpring(0.95, buttonSpring);
+                }}
+                onPressOut={() => {
+                  shortPressableScale.value = withSpring(1, buttonSpring);
+                }}
+                className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+              >
+                <Text style={{ color: muted }}>Short break time</Text>
+                <Text>{formattedShort}</Text>
+              </AnimatedPressable>
+              <AnimatedPressable
+                onPress={() => setShowLongPicker(!showLongPicker)}
+                style={{
+                  transform: [{ scale: longPressableScale }],
+                  backgroundColor: input,
+                  borderColor: border,
+                }}
+                onPressIn={() => {
+                  longPressableScale.value = withSpring(0.95, buttonSpring);
+                }}
+                onPressOut={() => {
+                  longPressableScale.value = withSpring(1, buttonSpring);
+                }}
+                className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+              >
+                <Text style={{ color: muted }}>Long break time</Text>
+                <Text>{formattedLong}</Text>
+              </AnimatedPressable>
+              <AnimatedPressable
+                onPress={() => setShowSessionPicker(!showSessionPicker)}
+                onPressIn={() => {
+                  sessionPressableScale.value = withSpring(0.95, buttonSpring);
+                }}
+                onPressOut={() => {
+                  sessionPressableScale.value = withSpring(1, buttonSpring);
+                }}
+                className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+                style={{
+                  transform: [{ scale: sessionPressableScale }],
+                  backgroundColor: input,
+                  borderColor: border,
+                }}
+              >
+                <Text style={{ color: muted }}>Sessions</Text>
+                <Text>{formattedSessions}</Text>
+              </AnimatedPressable>
             </View>
-          </View>
+            <View className="gap-4">
+              <View className="flex-row items-center gap-2 mb-2">
+                <Sparkles size={20} color={foreground} />
+                <H4>Available session presets</H4>
+              </View>
+              <View className="gap-4">
+                {sessionPresets.map((preset, index) => (
+                  <SessionPreset
+                    key={index}
+                    {...preset}
+                    onPress={handlePresetSubmit}
+                  />
+                ))}
+              </View>
+            </View>
+          </ScrollView>
         </Animated.View>
-        <Button onPress={handleSubmit}>
-          <Text style={{ color: "#ffffff" }}>Start</Text>
-        </Button>
+        <View style={{ backgroundColor: background }} className="p-4">
+          <Button onPress={handleSubmit}>
+            <Text style={{ color: "#ffffff" }}>Start</Text>
+          </Button>
+        </View>
       </SafeAreaWrapper>
     </GestureHandlerRootView>
   );
