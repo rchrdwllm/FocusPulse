@@ -1,5 +1,5 @@
 import NavTab from "@/components/ui/nav-tab";
-import { colors } from "@/constants/colors";
+import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { Tabs } from "expo-router";
 import {
   Circle,
@@ -8,13 +8,18 @@ import {
   Settings2,
   SquarePen,
 } from "lucide-react-native";
-import { useColorScheme } from "react-native";
+import React from "react";
+import { StatusBar, View } from "react-native";
+import { ThemeProvider, useTheme } from "../../components/theme/theme-context";
 
-const HomeLayout = () => {
-  const colorScheme = useColorScheme() || "light";
-  const { background, primary, muted } = colors[colorScheme];
+const Layout: React.FC = () => {
+  const { theme, currentColors } = useTheme();
+  const { background, primary, muted } = currentColors;
 
   return (
+    <View style={{ flex: 1, backgroundColor: background }}>
+      <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
+      <SafeAreaWrapper>
     <Tabs
       screenOptions={{
         tabBarStyle: {
@@ -73,7 +78,7 @@ const HomeLayout = () => {
             </NavTab>
           ),
         }}
-        name="asdf"
+        name="setting-screen"
       />
       <Tabs.Screen
         options={{
@@ -87,8 +92,18 @@ const HomeLayout = () => {
         }}
         name="profile-screen"
       />
-    </Tabs>
+        </Tabs>
+      </SafeAreaWrapper>
+      </View>
   );
 };
 
-export default HomeLayout;
+const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <Layout />
+    </ThemeProvider>
+  );
+};
+
+export default App;

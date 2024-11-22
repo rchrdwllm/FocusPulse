@@ -1,4 +1,4 @@
-import { useTheme } from "@/components/theme/theme-context";
+import { ThemeProvider, useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import * as ImagePicker from "expo-image-picker";
 import { CircleUserRound, Pencil } from "lucide-react-native";
@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 
 const ProfileScreen: React.FC = () => {
   const { theme, setTheme, currentColors } = useTheme();
@@ -29,8 +30,10 @@ const ProfileScreen: React.FC = () => {
     }
   };
   return (
-    <GestureHandlerRootView>
-      <SafeAreaWrapper className="bg-background px-4 pb-8">
+    <ThemeProvider>
+      <GestureHandlerRootView>
+        <View style={{ flex: 1, backgroundColor: background }}>
+      <SafeAreaWrapper className="px-4 pb-8">
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View className="flex-1 gap-1 mt-20">
             <View style={styles.iconContainer}>
@@ -87,8 +90,10 @@ const ProfileScreen: React.FC = () => {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaWrapper>
-    </GestureHandlerRootView>
+          </SafeAreaWrapper>
+          </View>
+      </GestureHandlerRootView>
+      </ThemeProvider>
   );
 };
 
