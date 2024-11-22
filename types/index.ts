@@ -24,3 +24,10 @@ export type Settings = {
   lastModified: Timestamp;
   userId: string;
 };
+
+export type SessionPreset = {
+  focus: number;
+  short: number;
+  long: number;
+  sessions: number;
+};

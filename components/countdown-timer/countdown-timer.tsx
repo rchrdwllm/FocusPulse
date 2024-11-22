@@ -45,20 +45,6 @@ const CountdownTimer = ({
   } = useTheme();
   const { settings } = useSettings();
 
-  useEffect(() => {
-    if (timerState === "short" || timerState === "long") {
-      if (settings) {
-        setIsPlaying(settings.autoStartBreaks);
-      }
-    }
-
-    if (timerState === "focus") {
-      if (settings) {
-        setIsPlaying(settings.autoStartPomodoro);
-      }
-    }
-  }, [timerState, settings]);
-
   const resetSessions = () => {
     setSessionArr(createSessions(sessions));
     setSessionCount(0);
@@ -95,6 +81,27 @@ const CountdownTimer = ({
 
     setSessionArr(updatedSessions);
   }, [sessionCount]);
+
+  useEffect(() => {
+    if (timerState === "short" || timerState === "long") {
+      if (settings) {
+        setIsPlaying(settings.autoStartBreaks);
+      }
+    }
+
+    if (timerState === "focus") {
+      if (settings) {
+        setIsPlaying(settings.autoStartPomodoro);
+      }
+    }
+  }, [
+    timerState,
+    settings,
+    focusDuration,
+    shortDuration,
+    longDuration,
+    sessions,
+  ]);
 
   const handleComplete = async () => {
     await incrementTaskSessions(currentTask.id);

@@ -1,14 +1,20 @@
+import React from "react";
+
+import SessionPreset from "@/components/countdown-timer/session-preset";
 import SessionPickerModal from "@/components/modals/session-picker-modal";
 import TimePickerModal from "@/components/modals/time-picker-modal";
 import { useTheme } from "@/components/theme/theme-context";
 import { Button } from "@/components/ui/button";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { Text } from "@/components/ui/text";
-import { H3 } from "@/components/ui/typography";
+import { H3, H4 } from "@/components/ui/typography";
+import { sessionPresets } from "@/constants/session-presets";
 import { buttonSpring } from "@/constants/spring";
 import { formatDuration } from "@/lib/utils";
 import { initUserSettings } from "@/server/settings";
+import { SessionPreset as SessionPresetType } from "@/types";
 import { router } from "expo-router";
+import { Sparkles } from "lucide-react-native";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -81,6 +87,21 @@ const NewTimerScreen = () => {
         shortDuration,
         longDuration,
         sessions,
+        newTimerKey: newTimerKey + 1,
+      },
+    });
+  };
+
+  const handlePresetSubmit = (values: SessionPresetType) => {
+    setNewTimerKey(newTimerKey + 1);
+
+    router.push({
+      pathname: "/(home)/(index)",
+      params: {
+        focusDuration: values.focus * 60,
+        shortDuration: values.short * 60,
+        longDuration: values.long * 60,
+        sessions: values.sessions,
         newTimerKey: newTimerKey + 1,
       },
     });
@@ -192,11 +213,6 @@ const NewTimerScreen = () => {
             </AnimatedPressable>
             <AnimatedPressable
               onPress={() => setShowSessionPicker(!showSessionPicker)}
-              style={{
-                transform: [{ scale: sessionPressableScale }],
-                backgroundColor: input,
-                borderColor: border,
-              }}
               onPressIn={() => {
                 sessionPressableScale.value = withSpring(0.95, buttonSpring);
               }}
@@ -204,10 +220,30 @@ const NewTimerScreen = () => {
                 sessionPressableScale.value = withSpring(1, buttonSpring);
               }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+              style={{
+                transform: [{ scale: sessionPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
+              }}
             >
               <Text style={{ color: muted }}>Sessions</Text>
               <Text>{formattedSessions}</Text>
             </AnimatedPressable>
+          </View>
+          <View className="gap-4">
+            <View className="flex-row items-center gap-2 mb-2">
+              <Sparkles size={20} color={foreground} />
+              <H4>Available session presets</H4>
+            </View>
+            <View className="gap-4">
+              {sessionPresets.map((preset, index) => (
+                <SessionPreset
+                  key={index}
+                  {...preset}
+                  onPress={handlePresetSubmit}
+                />
+              ))}
+            </View>
           </View>
         </Animated.View>
         <Button onPress={handleSubmit}>

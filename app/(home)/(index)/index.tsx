@@ -1,3 +1,5 @@
+import React from "react";
+
 import CountdownTimer from "@/components/countdown-timer/countdown-timer";
 import Task from "@/components/tasks/task";
 import { useTheme } from "@/components/theme/theme-context";
@@ -19,7 +21,6 @@ const HomeScreen = () => {
   const [currentTask, setCurrentTask] = useState(tasks[0]);
   const {
     currentColors: { background, muted },
-    theme,
   } = useTheme();
 
   useEffect(() => {

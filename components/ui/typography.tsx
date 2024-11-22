@@ -97,11 +97,12 @@ const H4 = forwardRef<TextRef, SlottableTextProps>(
         role="heading"
         aria-level="4"
         className={cn(
-          "web:scroll-m-20 text-xl text-foreground font-sans font-semibold tracking-tight web:select-text",
+          "web:scroll-m-20 text-xl tracking-tight web:select-text",
           className
         )}
         ref={ref}
         style={{
+          fontFamily: "Inter_700Bold",
           color: foreground,
         }}
         {...props}
