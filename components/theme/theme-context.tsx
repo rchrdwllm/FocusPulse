@@ -1,6 +1,13 @@
 import { colors } from "@/constants/colors";
-import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useColorScheme } from "react-native";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Platform, useColorScheme } from "react-native";
+import * as NavigationBar from "expo-navigation-bar";
 
 type Theme = "system" | "light" | "dark";
 
@@ -15,7 +22,9 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const systemTheme = useColorScheme();
   const [theme, setTheme] = useState<Theme>(systemTheme || "light");
-  const [currentColors, setCurrentColors] = useState(colors[theme === "system" ? systemTheme || "light" : theme]);
+  const [currentColors, setCurrentColors] = useState(
+    colors[theme === "system" ? systemTheme || "light" : theme]
+  );
 
   useEffect(() => {
     if (theme === "system") {
@@ -24,6 +33,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       setCurrentColors(colors[theme]);
     }
   }, [theme, systemTheme]);
+
+  useEffect(() => {
+    Platform.OS === "android" &&
+      NavigationBar.setBackgroundColorAsync(currentColors.background);
+  }, [theme]);
 
   const changeTheme = (newTheme: Theme) => {
     setTheme(newTheme);
@@ -35,7 +49,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: changeTheme, currentColors }}>
+    <ThemeContext.Provider
+      value={{ theme, setTheme: changeTheme, currentColors }}
+    >
       {children}
     </ThemeContext.Provider>
   );

@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme/theme-context";
 import { Stack } from "expo-router";
 
 const Layout = () => {

@@ -42,7 +42,7 @@ const RootLayout = () => {
   return (
     <ThemeProvider>
       <StatusBar />
-      <Stack initialRouteName="(home)">
+      <Stack initialRouteName="(auth)">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
       </Stack>

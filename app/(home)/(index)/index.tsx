@@ -1,5 +1,6 @@
 import CountdownTimer from "@/components/countdown-timer/countdown-timer";
 import Task from "@/components/tasks/task";
+import { useTheme } from "@/components/theme/theme-context";
 import { Input } from "@/components/ui/input";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { Text } from "@/components/ui/text";
@@ -16,16 +17,24 @@ const HomeScreen = () => {
   const [timerState, setTimerState] = useState<TimerState>("focus");
   const { tasks } = useTasks();
   const [currentTask, setCurrentTask] = useState(tasks[0]);
+  const {
+    currentColors: { background },
+    theme,
+  } = useTheme();
 
   useEffect(() => {
     setCurrentTask(tasks[0]);
   }, [tasks]);
 
   return (
-    <SafeAreaWrapper className="bg-background px-4">
+    <SafeAreaWrapper
+      style={{
+        backgroundColor: background,
+      }}
+    >
       <ScrollView
         className="flex-1"
-        contentContainerClassName="gap-12 justify-center items-center"
+        contentContainerClassName="px-4 gap-12 justify-center items-center"
       >
         <View className="w-full items-center px-12 gap-12 mt-12">
           <H1 className="text-center text-3xl">

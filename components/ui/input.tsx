@@ -1,14 +1,15 @@
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
-import { TextInput, useColorScheme } from "react-native";
+import { TextInput } from "react-native";
 import { cn } from "@/lib/utils";
-import { colors } from "@/constants/colors";
+import { useTheme } from "../theme/theme-context";
 
 const Input = forwardRef<
   ElementRef<typeof TextInput>,
   ComponentPropsWithoutRef<typeof TextInput>
 >(({ className, placeholderClassName, ...props }, ref) => {
-  const colorScheme = useColorScheme() || "light";
-  const { muted } = colors[colorScheme];
+  const {
+    currentColors: { muted, border, input, foreground },
+  } = useTheme();
 
   return (
     <TextInput
@@ -20,7 +21,12 @@ const Input = forwardRef<
       )}
       placeholderTextColor={muted}
       placeholderClassName={cn("text-muted", placeholderClassName)}
-      style={{ fontFamily: "Inter_400Regular" }}
+      style={{
+        fontFamily: "Inter_400Regular",
+        backgroundColor: input,
+        borderColor: border,
+        color: foreground,
+      }}
       {...props}
     />
   );

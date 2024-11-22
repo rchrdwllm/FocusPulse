@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const TextClassContext = createContext<string | undefined>(undefined);
 
 const Text = forwardRef<TextRef, SlottableTextProps>(
-  ({ className, asChild = false, ...props }, ref) => {
+  ({ className, asChild = false, style, ...props }, ref) => {
     const textClass = useContext(TextClassContext);
     const Component = asChild ? Slot.Text : RNText;
     return (
@@ -20,6 +20,7 @@ const Text = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         style={{
           fontFamily: "Inter_400Regular",
+          ...style,
         }}
         {...props}
       />

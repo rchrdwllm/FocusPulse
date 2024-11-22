@@ -1,6 +1,6 @@
 import { useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 import { CircleCheck, Palette, Timer } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar, Text, View } from "react-native";
@@ -30,11 +30,24 @@ const SettingsScreen = () => {
       <View style={{ flex: 1, backgroundColor: background }}>
         <SafeAreaWrapper className={`px-4 pb-8`}>
           <View className="flex-1 gap-6 mt-8">
-            <Text className="text-center" style={{ color: foreground, fontSize: 25, fontWeight: 'bold' }}>Settings</Text>
+            <Text
+              className="text-center"
+              style={{ color: foreground, fontSize: 25, fontWeight: "bold" }}
+            >
+              Settings
+            </Text>
             <View className="mt-4">
               <View className="flex-row items-center gap-2 mb-2">
                 <Timer size={20} color={foreground} />
-                <Text style={{ color: foreground, fontSize: 18, fontWeight: 'bold' }}>Timer</Text>
+                <Text
+                  style={{
+                    color: foreground,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Timer
+                </Text>
               </View>
               <View className="flex-row justify-between items-center mb-1">
                 <Text style={{ color: foreground }}>Auto Start Breaks</Text>
@@ -56,7 +69,15 @@ const SettingsScreen = () => {
             <View className="mt-4">
               <View className="flex-row items-center gap-2 mb-2">
                 <CircleCheck size={20} color={foreground} />
-                <Text style={{ color: foreground, fontSize: 18, fontWeight: 'bold' }}>Task</Text>
+                <Text
+                  style={{
+                    color: foreground,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Task
+                </Text>
               </View>
               <View className="flex-row justify-between items-center mb-1">
                 <Text style={{ color: foreground }}>Auto Check Task</Text>
@@ -77,22 +98,30 @@ const SettingsScreen = () => {
             </View>
             <View className="flex-row items-center gap-2 mb-2">
               <Palette size={20} color={foreground} />
-              <Text style={{ color: foreground, fontSize: 18, fontWeight: 'bold' }}>Theme</Text>
+              <Text
+                style={{ color: foreground, fontSize: 18, fontWeight: "bold" }}
+              >
+                Theme
+              </Text>
             </View>
             <View className="flex-row justify-between items-center mb-4">
               <Text style={{ color: foreground }}>App Theme</Text>
             </View>
             <View className="flex-row items-center gap-2 mb-2">
-                <Picker
+              <Picker
                 selectedValue={theme}
-                onValueChange={(itemValue) => handleThemeChange(itemValue as Theme)}
-                style={{ flex: 1, color: foreground }}
+                onValueChange={(itemValue) =>
+                  handleThemeChange(itemValue as Theme)
+                }
+                style={{
+                  flex: 1,
+                }}
                 itemStyle={{ backgroundColor: background }}
-                >
+              >
                 <Picker.Item label="System" value="system" color={foreground} />
                 <Picker.Item label="Light" value="light" color={foreground} />
                 <Picker.Item label="Dark" value="dark" color={foreground} />
-                </Picker>
+              </Picker>
             </View>
           </View>
         </SafeAreaWrapper>

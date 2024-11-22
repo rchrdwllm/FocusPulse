@@ -6,14 +6,19 @@ import { cn } from "@/lib/utils";
 const SafeAreaWrapper = ({
   children,
   className,
+  style,
 }: {
   children: ReactNode;
   className?: string;
+  style?: {};
 }) => {
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={{ paddingTop: top }} className={cn("flex-1", className)}>
+    <View
+      style={{ paddingTop: top, ...style }}
+      className={cn("flex-1", className)}
+    >
       {children}
     </View>
   );

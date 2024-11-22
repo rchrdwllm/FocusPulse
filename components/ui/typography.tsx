@@ -3,10 +3,15 @@ import * as Slot from "@rn-primitives/slot";
 import { SlottableTextProps, TextRef } from "@rn-primitives/types";
 import { Platform, Text as RNText, Role } from "react-native";
 import { cn } from "@/lib/utils";
+import { useTheme } from "../theme/theme-context";
 
 const H1 = forwardRef<TextRef, SlottableTextProps>(
   ({ className, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot.Text : RNText;
+    const {
+      currentColors: { foreground },
+    } = useTheme();
+
     return (
       <Component
         role="heading"
@@ -19,6 +24,7 @@ const H1 = forwardRef<TextRef, SlottableTextProps>(
         {...props}
         style={{
           fontFamily: "Inter_700Bold",
+          color: foreground,
         }}
       />
     );
@@ -51,8 +57,12 @@ const H2 = forwardRef<TextRef, SlottableTextProps>(
 H2.displayName = "H2";
 
 const H3 = forwardRef<TextRef, SlottableTextProps>(
-  ({ className, asChild = false, ...props }, ref) => {
+  ({ className, asChild = false, style, ...props }, ref) => {
     const Component = asChild ? Slot.Text : RNText;
+    const {
+      currentColors: { foreground },
+    } = useTheme();
+
     return (
       <Component
         role="heading"
@@ -65,6 +75,8 @@ const H3 = forwardRef<TextRef, SlottableTextProps>(
         {...props}
         style={{
           fontFamily: "Inter_700Bold",
+          color: foreground,
+          ...style,
         }}
       />
     );
@@ -76,6 +88,10 @@ H3.displayName = "H3";
 const H4 = forwardRef<TextRef, SlottableTextProps>(
   ({ className, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot.Text : RNText;
+    const {
+      currentColors: { foreground },
+    } = useTheme();
+
     return (
       <Component
         role="heading"
@@ -85,6 +101,9 @@ const H4 = forwardRef<TextRef, SlottableTextProps>(
           className
         )}
         ref={ref}
+        style={{
+          color: foreground,
+        }}
         {...props}
       />
     );

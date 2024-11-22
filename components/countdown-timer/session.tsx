@@ -3,13 +3,12 @@ import { Session as SessionType } from "@/types";
 import { useEffect, useMemo } from "react";
 import { useColorScheme } from "react-native";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import { useTheme } from "../theme/theme-context";
 
 const Session = ({ isCompleted }: SessionType) => {
-  const colorScheme = useColorScheme() || "light";
-  const { tertiary, primary } = useMemo(
-    () => colors[colorScheme],
-    [colorScheme]
-  );
+  const {
+    currentColors: { tertiary, primary },
+  } = useTheme();
   const bgColor = useSharedValue(tertiary);
 
   useEffect(() => {
@@ -18,7 +17,7 @@ const Session = ({ isCompleted }: SessionType) => {
     } else {
       bgColor.value = withTiming(tertiary);
     }
-  }, [isCompleted, colorScheme]);
+  }, [isCompleted, tertiary, primary]);
 
   return (
     <Animated.View

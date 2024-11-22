@@ -10,6 +10,7 @@ import Sessions from "./sessions";
 import { createSessions } from "@/lib/utils";
 import { useTasks } from "@/hooks/useTasks";
 import { incrementTaskSessions } from "@/server/task";
+import { useTheme } from "../theme/theme-context";
 
 type CountdownTimerProps = {
   focusDuration: number;
@@ -39,6 +40,9 @@ const CountdownTimer = ({
   const [timerKey, setTimerKey] = useState(0);
   const [sessionsArr, setSessionArr] = useState(() => createSessions(sessions));
   const [sessionCount, setSessionCount] = useState(0);
+  const {
+    currentColors: { secondary },
+  } = useTheme();
 
   const resetSessions = () => {
     setSessionArr(createSessions(sessions));
@@ -111,7 +115,10 @@ const CountdownTimer = ({
             const seconds = remainingTime % 60;
 
             return (
-              <View className="bg-secondary h-[252px] w-[252px] rounded-full justify-center items-center">
+              <View
+                className="h-[252px] w-[252px] rounded-full justify-center items-center"
+                style={{ backgroundColor: secondary }}
+              >
                 <H1 className="text-foreground text-7xl">
                   {minutes}:{seconds.toString().padStart(2, "0")}
                 </H1>
