@@ -22,6 +22,7 @@ import { useMemo, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { getTimeObject } from "@/lib/utils";
+import { useTheme } from "../theme/theme-context";
 
 type TimePickerModalProps = {
   setShowTimePicker: (show: boolean) => void;
@@ -40,12 +41,14 @@ const TimePickerModal = ({
   const overlayOpacity = useSharedValue(1);
   const { height } = useWindowDimensions();
   const colorScheme = useColorScheme() || "light";
-  const { background, foreground, muted } = colors[colorScheme];
   const timePickerRef = useRef<TimerPickerRef>(null);
   const [newDuration, setNewDuration] = useState(defaultDuration);
   const { minutes, seconds } = useMemo(() => {
     return getTimeObject(defaultDuration);
   }, [defaultDuration]);
+  const {
+    currentColors: { background, muted, foreground, input, border },
+  } = useTheme();
 
   const toggleModal = () => {
     setShowTimePicker(false);
@@ -109,8 +112,9 @@ const TimePickerModal = ({
           exiting={SlideOutDown}
           style={{
             transform: [{ translateY: modalOffset }],
+            backgroundColor: background,
           }}
-          className="flex-1 absolute h-full w-full bg-background z-20"
+          className="flex-1 absolute h-full w-full z-20"
         >
           <SafeAreaWrapper>
             <H3 className="text-center pt-12">{title}</H3>
@@ -158,12 +162,13 @@ const TimePickerModal = ({
               <View className="flex-row gap-4 px-12">
                 <Button
                   onPress={toggleModal}
-                  className="flex-1 bg-input border border-border"
+                  className="flex-1 border"
+                  style={{ backgroundColor: input, borderColor: border }}
                 >
-                  <Text className="text-foreground">Cancel</Text>
+                  <Text>Cancel</Text>
                 </Button>
                 <Button className="flex-1" onPress={handleSubmit}>
-                  <Text>Set</Text>
+                  <Text style={{ color: "#ffffff" }}>Set</Text>
                 </Button>
               </View>
             </View>

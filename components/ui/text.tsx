@@ -3,6 +3,7 @@ import * as Slot from "@rn-primitives/slot";
 import { SlottableTextProps, TextRef } from "@rn-primitives/types";
 import { Text as RNText } from "react-native";
 import { cn } from "@/lib/utils";
+import { useTheme } from "../theme/theme-context";
 
 const TextClassContext = createContext<string | undefined>(undefined);
 
@@ -10,6 +11,10 @@ const Text = forwardRef<TextRef, SlottableTextProps>(
   ({ className, asChild = false, style, ...props }, ref) => {
     const textClass = useContext(TextClassContext);
     const Component = asChild ? Slot.Text : RNText;
+    const {
+      currentColors: { foreground },
+    } = useTheme();
+
     return (
       <Component
         className={cn(
@@ -20,6 +25,7 @@ const Text = forwardRef<TextRef, SlottableTextProps>(
         ref={ref}
         style={{
           fontFamily: "Inter_400Regular",
+          color: foreground,
           ...style,
         }}
         {...props}

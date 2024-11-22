@@ -19,27 +19,25 @@ import { useColorScheme, useWindowDimensions, View } from "react-native";
 import { TimerPicker, TimerPickerRef } from "react-native-timer-picker";
 import { colors } from "@/constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
-import { getTimeObject } from "@/lib/utils";
 import { useTheme } from "../theme/theme-context";
 
-type SessionPickerModalProps = {
+type TaskSessionPickerModalProps = {
   setShowSessionPicker: (show: boolean) => void;
   setSessions: (sessions: number) => void;
   defaultSessions: number;
 };
 
-const SessionPickerModal = ({
+const TaskSessionPickerModal = ({
   setShowSessionPicker,
   setSessions,
   defaultSessions,
-}: SessionPickerModalProps) => {
+}: TaskSessionPickerModalProps) => {
   const modalOffset = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
   const { height } = useWindowDimensions();
-  const colorScheme = useColorScheme() || "light";
   const sessionPickerRef = useRef<TimerPickerRef>(null);
   const [newSessions, setNewSessions] = useState(defaultSessions);
   const {
@@ -124,7 +122,7 @@ const SessionPickerModal = ({
                 secondLabel="sessions"
                 secondLimit={{
                   min: 1,
-                  max: 12,
+                  max: 8,
                 }}
                 FlatList={FlatList as any}
                 LinearGradient={LinearGradient}
@@ -163,10 +161,16 @@ const SessionPickerModal = ({
                     borderColor: border,
                   }}
                 >
-                  <Text>Cancel</Text>
+                  <Text
+                    style={{
+                      color: foreground,
+                    }}
+                  >
+                    Cancel
+                  </Text>
                 </Button>
                 <Button className="flex-1" onPress={handleSubmit}>
-                  <Text style={{ color: "#ffffff" }}>Set</Text>
+                  <Text>Set</Text>
                 </Button>
               </View>
             </View>
@@ -177,4 +181,4 @@ const SessionPickerModal = ({
   );
 };
 
-export default SessionPickerModal;
+export default TaskSessionPickerModal;

@@ -18,7 +18,7 @@ const HomeScreen = () => {
   const { tasks } = useTasks();
   const [currentTask, setCurrentTask] = useState(tasks[0]);
   const {
-    currentColors: { background },
+    currentColors: { background, muted },
     theme,
   } = useTheme();
 
@@ -45,8 +45,8 @@ const HomeScreen = () => {
                 : "Enjoy a long break"}
           </H1>
           <Input
-            value={currentTask?.title}
-            className="w-full pointer-events-none"
+            value={`Task: ${currentTask?.title}`}
+            className="w-full pointer-events-none text-center"
           />
         </View>
         <CountdownTimer
@@ -62,7 +62,7 @@ const HomeScreen = () => {
         />
         <View className="w-full pb-8">
           <H3 className="text-center">Tasks</H3>
-          <Text className="text-center text-muted">
+          <Text className="text-center" style={{ color: muted }}>
             You can view your tasks here
           </Text>
           <View className="gap-1 mt-4">
@@ -72,7 +72,7 @@ const HomeScreen = () => {
           </View>
           <View className="items-center mt-8">
             <Link href="/completed-tasks">
-              <Text className="text-center text-muted">
+              <Text className="text-center" style={{ color: muted }}>
                 See completed tasks
               </Text>
             </Link>

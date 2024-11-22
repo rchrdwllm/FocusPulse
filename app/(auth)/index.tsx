@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { login } from "@/server/actions";
+import { useTheme } from "@/components/theme/theme-context";
 
 const loginBg = require("@/assets/images/login-bg.png");
 const authLogoLight = require("@/assets/images/focus-pulse-auth-logo-light.png");
@@ -40,7 +41,10 @@ const LoginScreen = () => {
   });
   const [open, setOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
-  const colorScheme = useColorScheme() || "light";
+  const {
+    currentColors: { muted },
+    theme,
+  } = useTheme();
 
   const handleLogin = async (data: z.infer<typeof loginSchema>) => {
     setOpen(true);
@@ -50,7 +54,7 @@ const LoginScreen = () => {
     setOpen(false);
 
     if (success) {
-      router.replace("/(home)");
+      router.replace("/(home)/(index)");
     } else if (error) {
       setLoginError(JSON.stringify(error));
     }
@@ -79,9 +83,7 @@ const LoginScreen = () => {
             <View className="flex-1 mt-8">
               <View className="items-center">
                 <Image
-                  source={
-                    colorScheme === "light" ? authLogoDark : authLogoLight
-                  }
+                  source={theme === "light" ? authLogoDark : authLogoLight}
                   className="w-1/2 h-[195]"
                   resizeMode="contain"
                 />
@@ -141,7 +143,7 @@ const LoginScreen = () => {
               </Button>
               <View className="items-center">
                 <Link href="/sign-up">
-                  <Text className="text-center text-muted">
+                  <Text className="text-center" style={{ color: muted }}>
                     Don't have an account yet? Register here
                   </Text>
                 </Link>

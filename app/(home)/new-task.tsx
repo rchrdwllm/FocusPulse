@@ -1,4 +1,11 @@
-import SessionPickerModal from "@/components/modals/session-picker-modal";
+import TaskSessionPickerModal from "@/components/modals/task-session-picker-modal";
+import { useTheme } from "@/components/theme/theme-context";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
@@ -10,7 +17,7 @@ import { createTask } from "@/server/task";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Pressable, View } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, {
   useSharedValue,
@@ -33,6 +40,10 @@ const NewTaskScreen = () => {
       task: "",
     },
   });
+  const [loading, setLoading] = useState(false);
+  const {
+    currentColors: { primary, background, input, border, muted },
+  } = useTheme();
 
   useEffect(() => {
     if (showSessionPicker) {
@@ -45,22 +56,39 @@ const NewTaskScreen = () => {
   }, [showSessionPicker]);
 
   const handleSubmit = async (data: z.infer<typeof taskSchema>) => {
-    const { success, error } = await createTask({
+    setLoading(true);
+
+    await createTask({
       title: data.task,
       requiredSessions,
     });
+
+    setLoading(false);
   };
 
   return (
     <GestureHandlerRootView>
       {showSessionPicker && (
-        <SessionPickerModal
+        <TaskSessionPickerModal
           defaultSessions={requiredSessions}
           setSessions={setRequiredSessions}
           setShowSessionPicker={setShowSessionPicker}
         />
       )}
-      <SafeAreaWrapper className="bg-background px-4 pb-8">
+      <AlertDialog open={loading}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Creating task</AlertDialogTitle>
+          </AlertDialogHeader>
+          <ActivityIndicator color={primary} />
+        </AlertDialogContent>
+      </AlertDialog>
+      <SafeAreaWrapper
+        className="px-4 pb-8"
+        style={{
+          backgroundColor: background,
+        }}
+      >
         <Animated.View
           style={{
             transform: [{ scale: containerScale }],
@@ -91,6 +119,8 @@ const NewTaskScreen = () => {
               onPress={() => setShowSessionPicker(!showSessionPicker)}
               style={{
                 transform: [{ scale: sessionPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
               }}
               onPressIn={() => {
                 sessionPressableScale.value = withSpring(0.95, buttonSpring);
@@ -98,9 +128,9 @@ const NewTaskScreen = () => {
               onPressOut={() => {
                 sessionPressableScale.value = withSpring(1, buttonSpring);
               }}
-              className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
+              className="web:flex h-10 native:h-12 web:w-full rounded-full border px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
-              <Text className="text-muted">Required sessions</Text>
+              <Text style={{ color: muted }}>Required sessions</Text>
               <Text>{requiredSessions}</Text>
             </AnimatedPressable>
           </View>
@@ -111,7 +141,7 @@ const NewTaskScreen = () => {
           )}
         </Animated.View>
         <Button onPress={form.handleSubmit(handleSubmit)}>
-          <Text>Add task</Text>
+          <Text style={{ color: "#ffffff" }}>Add task</Text>
         </Button>
       </SafeAreaWrapper>
     </GestureHandlerRootView>

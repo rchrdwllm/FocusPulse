@@ -1,5 +1,6 @@
 import SessionPickerModal from "@/components/modals/session-picker-modal";
 import TimePickerModal from "@/components/modals/time-picker-modal";
+import { useTheme } from "@/components/theme/theme-context";
 import { Button } from "@/components/ui/button";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import { Text } from "@/components/ui/text";
@@ -46,6 +47,9 @@ const NewTimerScreen = () => {
     return sessions > 1 ? `${sessions} sessions` : `${sessions} session`;
   }, [sessions]);
   const [newTimerKey, setNewTimerKey] = useState(0);
+  const {
+    currentColors: { background, input, border, muted, foreground, primary },
+  } = useTheme();
 
   useEffect(() => {
     if (
@@ -110,7 +114,12 @@ const NewTimerScreen = () => {
           setShowSessionPicker={setShowSessionPicker}
         />
       )}
-      <SafeAreaWrapper className="bg-background px-4 pb-8">
+      <SafeAreaWrapper
+        style={{
+          backgroundColor: background,
+        }}
+        className="px-4 pb-8"
+      >
         <Animated.View
           style={{
             transform: [{ scale: containerScale }],
@@ -126,6 +135,8 @@ const NewTimerScreen = () => {
               onPress={() => setShowFocusPicker(!showFocusPicker)}
               style={{
                 transform: [{ scale: focusPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
               }}
               onPressIn={() => {
                 focusPressableScale.value = withSpring(0.95, buttonSpring);
@@ -135,13 +146,15 @@ const NewTimerScreen = () => {
               }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
-              <Text className="text-muted">Focus time</Text>
+              <Text style={{ color: muted }}>Focus time</Text>
               <Text>{formattedFocus}</Text>
             </AnimatedPressable>
             <AnimatedPressable
               onPress={() => setShowShortPicker(!showShortPicker)}
               style={{
                 transform: [{ scale: shortPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
               }}
               onPressIn={() => {
                 shortPressableScale.value = withSpring(0.95, buttonSpring);
@@ -151,13 +164,15 @@ const NewTimerScreen = () => {
               }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
-              <Text className="text-muted">Short break time</Text>
+              <Text style={{ color: muted }}>Short break time</Text>
               <Text>{formattedShort}</Text>
             </AnimatedPressable>
             <AnimatedPressable
               onPress={() => setShowLongPicker(!showLongPicker)}
               style={{
                 transform: [{ scale: longPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
               }}
               onPressIn={() => {
                 longPressableScale.value = withSpring(0.95, buttonSpring);
@@ -167,13 +182,15 @@ const NewTimerScreen = () => {
               }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
-              <Text className="text-muted">Long break time</Text>
+              <Text style={{ color: muted }}>Long break time</Text>
               <Text>{formattedLong}</Text>
             </AnimatedPressable>
             <AnimatedPressable
               onPress={() => setShowSessionPicker(!showSessionPicker)}
               style={{
                 transform: [{ scale: sessionPressableScale }],
+                backgroundColor: input,
+                borderColor: border,
               }}
               onPressIn={() => {
                 sessionPressableScale.value = withSpring(0.95, buttonSpring);
@@ -183,13 +200,13 @@ const NewTimerScreen = () => {
               }}
               className="web:flex h-10 native:h-12 web:w-full rounded-full border border-border bg-input px-4 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-ring web:focus-visible:ring-offset-0 flex-row items-center justify-between"
             >
-              <Text className="text-muted">Sessions</Text>
+              <Text style={{ color: muted }}>Sessions</Text>
               <Text>{formattedSessions}</Text>
             </AnimatedPressable>
           </View>
         </Animated.View>
         <Button onPress={handleSubmit}>
-          <Text>Start</Text>
+          <Text style={{ color: "#ffffff" }}>Start</Text>
         </Button>
       </SafeAreaWrapper>
     </GestureHandlerRootView>
