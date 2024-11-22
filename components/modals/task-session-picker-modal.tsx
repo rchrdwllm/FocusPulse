@@ -170,7 +170,7 @@ const TaskSessionPickerModal = ({
                   </Text>
                 </Button>
                 <Button className="flex-1" onPress={handleSubmit}>
-                  <Text>Set</Text>
+                  <Text style={{ color: "#ffffff" }}>Set</Text>
                 </Button>
               </View>
             </View>

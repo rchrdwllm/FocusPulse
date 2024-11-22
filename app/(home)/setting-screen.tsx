@@ -1,5 +1,6 @@
 import { useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import { H3 } from "@/components/ui/typography";
 import { Picker } from "@react-native-picker/picker";
 import { CircleCheck, Palette, Timer } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
@@ -29,13 +30,8 @@ const SettingsScreen = () => {
     <GestureHandlerRootView>
       <View style={{ flex: 1, backgroundColor: background }}>
         <SafeAreaWrapper className={`px-4 pb-8`}>
-          <View className="flex-1 gap-6 mt-8">
-            <Text
-              className="text-center"
-              style={{ color: foreground, fontSize: 25, fontWeight: "bold" }}
-            >
-              Settings
-            </Text>
+          <View className="flex-1 gap-6 mt-12">
+            <H3 className="text-center">Settings</H3>
             <View className="mt-4">
               <View className="flex-row items-center gap-2 mb-2">
                 <Timer size={20} color={foreground} />
