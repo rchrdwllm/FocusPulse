@@ -84,7 +84,7 @@ const NewTaskScreen = () => {
         </AlertDialogContent>
       </AlertDialog>
       <SafeAreaWrapper
-        className="px-4 pb-8"
+        className="px-4 pb-4"
         style={{
           backgroundColor: background,
         }}
