@@ -139,7 +139,7 @@ const LoginScreen = () => {
             </View>
             <View className="px-8 gap-4">
               <Button onPress={form.handleSubmit(handleLogin)}>
-                <Text>Login</Text>
+                <Text style={{ color: "white" }}>Login</Text>
               </Button>
               <View className="items-center">
                 <Link href="/sign-up">

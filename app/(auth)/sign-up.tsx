@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   View,
   ImageBackground,
@@ -49,7 +51,7 @@ const SignUpScreen = () => {
     setOpen(false);
 
     if (success) {
-      router.replace("/(home)");
+      router.replace("/(home)/(index)");
     } else if (error) {
       setRegisterError(JSON.stringify(error));
     }
@@ -131,7 +133,7 @@ const SignUpScreen = () => {
             </View>
             <View className="px-8 gap-4">
               <Button onPress={form.handleSubmit(handleSignUp)}>
-                <Text>Sign up</Text>
+                <Text style={{ color: "white" }}>Sign up</Text>
               </Button>
               <View className="items-center">
                 <Link href="/">
