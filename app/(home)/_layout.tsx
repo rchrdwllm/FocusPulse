@@ -27,7 +27,7 @@ const Layout: React.FC = () => {
             tabBarStyle: {
               backgroundColor: background,
               borderTopWidth: 0,
-              height: 60,
+              height: 70,
               paddingTop: 8,
             },
             tabBarShowLabel: false,
