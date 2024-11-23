@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { View } from "react-native";
+import { Platform, SafeAreaView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ const SafeAreaWrapper = ({
 
   return (
     <View
-      style={{ paddingTop: top, ...style }}
+      style={{ paddingTop: Platform.OS === "android" ? top : 28, ...style }}
       className={cn("flex-1", className)}
     >
       {children}
