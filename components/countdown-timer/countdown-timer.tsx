@@ -1,16 +1,16 @@
-import { H1 } from "@/components/ui/typography";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
-import { useColorScheme, View } from "react-native";
-import { colors } from "@/constants/colors";
 import { Button } from "@/components/ui/button";
-import { Pause, Play } from "lucide-react-native";
-import { useEffect, useState } from "react";
-import { Task, TimerState } from "@/types";
-import Sessions from "./sessions";
+import { H1 } from "@/components/ui/typography";
+import { colors } from "@/constants/colors";
+import { useSettings } from "@/hooks/useSettings";
 import { createSessions } from "@/lib/utils";
 import { incrementTaskSessions } from "@/server/task";
+import { Task, TimerState } from "@/types";
+import { Pause, Play } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { useColorScheme, View } from "react-native";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useTheme } from "../theme/theme-context";
-import { useSettings } from "@/hooks/useSettings";
+import Sessions from "./sessions";
 
 type CountdownTimerProps = {
   focusDuration: number;

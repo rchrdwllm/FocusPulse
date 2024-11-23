@@ -2,7 +2,7 @@ import { ThemeProvider, useTheme } from "@/components/theme/theme-context";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
 import * as ImagePicker from "expo-image-picker";
 import { CircleUserRound, Pencil } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -12,12 +12,16 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/server/firebase";
+import { getCurrentUser } from "@/server/user";
 const streak = require("@/assets/images/streak.png");
 
 const ProfileScreen: React.FC = () => {
   const { currentColors } = useTheme();
   const { background, foreground } = currentColors;
-  const [image, setImage] = useState<string | null>(null); // Correct destructuring
+  const [image, setImage] = useState<string | null>(null);
+  const [streakCount, setStreakCount] = useState(0);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,6 +35,25 @@ const ProfileScreen: React.FC = () => {
       setImage(result.assets[0].uri);
     }
   };
+
+  useEffect(() => {
+    const fetchStreak = async () => {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        return;
+      }
+
+      const streakRef = doc(db, "streaks", currentUser.uid);
+      const streakDoc = await getDoc(streakRef);
+
+      if (streakDoc.exists()) {
+        const streakData = streakDoc.data();
+        setStreakCount(streakData.streakCount);
+      }
+    };
+
+    fetchStreak();
+  }, []);
 
   return (
     <ThemeProvider>
@@ -83,26 +106,13 @@ const ProfileScreen: React.FC = () => {
                       Keep your streak going!
                     </Text>
                     <Text className="text-base text-[#ffffff]">
-                      12 days and counting
+                      {streakCount} days and counting
                     </Text>
                   </View>
                 </View>
                 <View style={styles.placeholder}>
                   <Text style={styles.placeholderText}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Cras mattis magna in leo facilisis fermentum. Cras lorem
-                    dolor, egestas in metus et, porttitor vehicula libero. Sed
-                    tincidunt tortor posuere, consequat velit hendrerit, iaculis
-                    erat. Duis at mattis nisl. Quisque odio nunc, egestas eu
-                    pellentesque vulputate, sollicitudin gravida ante. Aliquam
-                    nec placerat velit. Sed blandit posuere ante vel ornare. Sed
-                    sodales vulputate enim, vel placerat ante pellentesque eget.
-                    Suspendisse ex urna, sagittis eget fringilla eget, dapibus
-                    ut ligula. Aliquam a felis tincidunt, porttitor nisl sed,
-                    imperdiet neque. Pellentesque viverra velit sit amet mauris
-                    molestie fermentum. In hac habitasse platea dictumst. Class
-                    aptent taciti sociosqu ad litora torquent per conubia
-                    nostra, per inceptos himenaeos.
+                    Placeholder for additional content
                   </Text>
                 </View>
               </View>
@@ -159,9 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     maxWidth: "100%",
   },
-
   streak: {
-    //PLACEHOLDER FOR STREAK FEATURE
     width: 390,
     height: 100,
     backgroundColor: "#594EFC",

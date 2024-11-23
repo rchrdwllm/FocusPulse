@@ -46,6 +46,7 @@
     "expo-web-browser": "~14.0.1",
     "firebase": "^11.0.1",
     "lucide-react-native": "^0.454.0",
+    "moment-timezone": "^0.5.46",
     "nativewind": "^4.0.1",
     "react": "18.3.1",
     "react-countdown-circle-timer": "^3.2.1",
