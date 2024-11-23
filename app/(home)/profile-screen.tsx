@@ -7,7 +7,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,13 +14,20 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/server/firebase";
 import { getCurrentUser } from "@/server/user";
+import { H1, H3, H4 } from "@/components/ui/typography";
+import { Text } from "@/components/ui/text";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+
 const streak = require("@/assets/images/streak.png");
 
 const ProfileScreen: React.FC = () => {
-  const { currentColors } = useTheme();
-  const { background, foreground } = currentColors;
+  const {
+    currentColors: { muted, background, foreground, primary },
+  } = useTheme();
   const [image, setImage] = useState<string | null>(null);
   const [streakCount, setStreakCount] = useState(0);
+  const [bio, setBio] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,71 +62,68 @@ const ProfileScreen: React.FC = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <GestureHandlerRootView>
-        <View style={{ flex: 1, backgroundColor: background }}>
-          <SafeAreaWrapper className="px-4 pb-8">
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-              <View className="flex-1 gap-1">
-                <View style={styles.iconContainer}>
-                  {image ? (
-                    <Image source={{ uri: image }} style={styles.image} />
-                  ) : (
-                    <CircleUserRound
-                      size={200}
-                      color={foreground}
-                      strokeWidth={1}
-                    />
-                  )}
-                  <TouchableOpacity onPress={pickImage}>
-                    <Pencil
-                      size={35}
-                      color={foreground}
-                      strokeWidth={2}
-                      style={styles.iconOverlap}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <Text className="text-center text-4xl text-[#ffffff] font-bold">
-                  Hello, user!
+    <GestureHandlerRootView>
+      <SafeAreaWrapper
+        style={{
+          backgroundColor: background,
+        }}
+      >
+        <ScrollView contentContainerClassName="px-4 pb-8">
+          <View className="flex-1 gap-4">
+            <View style={styles.iconContainer}>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.image} />
+              ) : (
+                <CircleUserRound
+                  size={200}
+                  color={foreground}
+                  strokeWidth={1}
+                />
+              )}
+              <TouchableOpacity onPress={pickImage}>
+                <Pencil
+                  size={35}
+                  color={foreground}
+                  strokeWidth={2}
+                  style={styles.iconOverlap}
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <H1 className="text-center">Hello, user!</H1>
+              <Text
+                className="text-center"
+                style={{
+                  color: muted,
+                }}
+              >
+                Joined November 2024
+              </Text>
+            </View>
+            <Textarea placeholder="Bio" value={bio} onChangeText={setBio} />
+            <View
+              className="flex-row items-center justify-center gap-4 rounded-3xl px-4 py-8"
+              style={{
+                backgroundColor: primary,
+              }}
+            >
+              <Image source={streak} style={styles.streakIcon} />
+              <View>
+                <H4 style={{ color: "white" }}>Keep your streak going!</H4>
+                <Text style={{ color: "white" }}>
+                  {streakCount} days and counting
                 </Text>
-                <Text className="text-center text-base text-[#827D95]">
-                  Joined November 2024
-                </Text>
-                <View style={styles.bio}>
-                  <Text style={styles.bioText}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Cras mattis magna in leo facilisis fermentum. Cras lorem
-                    dolor, egestas in metus et, porttitor vehicula libero. Sed
-                    tincidunt tortor posuere, consequat velit hendrerit, iaculis
-                    erat. Duis at mattis nisl.
-                  </Text>
-                </View>
-                <View
-                  style={styles.streak}
-                  className="flex-row items-center justify-center"
-                >
-                  <Image source={streak} style={styles.streakIcon} />
-                  <View>
-                    <Text className="text-3xl text-[#ffffff] font-bold">
-                      Keep your streak going!
-                    </Text>
-                    <Text className="text-base text-[#ffffff]">
-                      {streakCount} days and counting
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.placeholder}>
-                  <Text style={styles.placeholderText}>
-                    Placeholder for additional content
-                  </Text>
-                </View>
               </View>
-            </ScrollView>
-          </SafeAreaWrapper>
+            </View>
+          </View>
+        </ScrollView>
+        <View className="px-4 py-8">
+          <Button>
+            <Text>Save changes</Text>
+          </Button>
         </View>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+      </SafeAreaWrapper>
+    </GestureHandlerRootView>
   );
 };
 
@@ -168,13 +171,6 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 16,
     maxWidth: "100%",
-  },
-  streak: {
-    width: 390,
-    height: 100,
-    backgroundColor: "#594EFC",
-    marginTop: 20,
-    borderRadius: 20,
   },
   placeholder: {
     width: 390,
