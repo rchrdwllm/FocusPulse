@@ -1,12 +1,7 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import moment from "moment-timezone";
 import { db } from "@/server/firebase";
-
-export const getCurrentUser = () => {
-  const auth = getAuth();
-  return auth.currentUser;
-};
+import { getCurrentUser } from "./user";
 
 export const updateStreak = async () => {
   const currentUser = getCurrentUser();
