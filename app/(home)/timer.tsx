@@ -24,6 +24,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { ScrollView } from "react-native";
+import { initAnalytics } from "@/server/analytics";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -58,10 +59,6 @@ const NewTimerScreen = () => {
   const {
     currentColors: { background, input, border, muted, foreground, primary },
   } = useTheme();
-
-  useEffect(() => {
-    initUserSettings();
-  }, []);
 
   useEffect(() => {
     if (
@@ -145,7 +142,6 @@ const NewTimerScreen = () => {
         style={{
           backgroundColor: background,
         }}
-        className="pb-8"
       >
         <Animated.View
           style={{
@@ -252,7 +248,7 @@ const NewTimerScreen = () => {
             </View>
           </ScrollView>
         </Animated.View>
-        <View style={{ backgroundColor: background }} className="px-4 pt-4">
+        <View style={{ backgroundColor: background }} className="p-4">
           <Button onPress={handleSubmit}>
             <Text style={{ color: "#ffffff" }}>Start</Text>
           </Button>

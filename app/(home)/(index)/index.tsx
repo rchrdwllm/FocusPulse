@@ -12,6 +12,8 @@ import { TimerState } from "@/types";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
+import { initUserSettings } from "@/server/settings";
+import { initAnalytics } from "@/server/analytics";
 
 const HomeScreen = () => {
   const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
@@ -22,6 +24,11 @@ const HomeScreen = () => {
   const {
     currentColors: { background, muted },
   } = useTheme();
+
+  useEffect(() => {
+    initUserSettings();
+    initAnalytics();
+  }, []);
 
   useEffect(() => {
     setCurrentTask(tasks[0]);
@@ -46,7 +53,11 @@ const HomeScreen = () => {
                 : "Enjoy a long break"}
           </H1>
           <Input
-            value={`Task: ${currentTask?.title}`}
+            value={
+              currentTask
+                ? `Task: ${currentTask?.title}`
+                : "Not working on any task"
+            }
             className="w-full pointer-events-none text-center"
           />
         </View>

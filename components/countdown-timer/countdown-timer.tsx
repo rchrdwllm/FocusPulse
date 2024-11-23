@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Button } from "@/components/ui/button";
 import { H1 } from "@/components/ui/typography";
 import { colors } from "@/constants/colors";
@@ -11,6 +13,8 @@ import { useColorScheme, View } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useTheme } from "../theme/theme-context";
 import Sessions from "./sessions";
+import { useDebounce } from "@uidotdev/usehooks";
+import { updateAnalytics } from "@/server/analytics";
 
 type CountdownTimerProps = {
   focusDuration: number;
@@ -44,6 +48,13 @@ const CountdownTimer = ({
     currentColors: { secondary },
   } = useTheme();
   const { settings } = useSettings();
+  const [focusSpent, setFocusSpent] = useState(0);
+  const debouncedFocus = useDebounce(focusSpent, 5000);
+  const [shortSpent, setShortSpent] = useState(0);
+  const debouncedShort = useDebounce(shortSpent, 5000);
+  const [longSpent, setLongSpent] = useState(0);
+  const debouncedLong = useDebounce(longSpent, 5000);
+  const [sessionsSpent, setSessionsSpent] = useState(0);
 
   const resetSessions = () => {
     setSessionArr(createSessions(sessions));
@@ -68,6 +79,38 @@ const CountdownTimer = ({
       setTimerState("long");
     }
   }, [sessionCount]);
+
+  useEffect(() => {
+    if (debouncedFocus) {
+      updateAnalytics({ focus: debouncedFocus });
+
+      setFocusSpent(0);
+    }
+  }, [debouncedFocus]);
+
+  useEffect(() => {
+    if (debouncedShort) {
+      updateAnalytics({ short: debouncedShort });
+
+      setShortSpent(0);
+    }
+  }, [debouncedShort]);
+
+  useEffect(() => {
+    if (debouncedLong) {
+      updateAnalytics({ long: debouncedLong });
+
+      setLongSpent(0);
+    }
+  }, [debouncedLong]);
+
+  useEffect(() => {
+    if (sessionsSpent) {
+      updateAnalytics({ sessions: sessionsSpent });
+
+      setSessionsSpent(0);
+    }
+  }, [sessionsSpent]);
 
   useEffect(() => {
     const updatedSessions = sessionsArr.map((session) => {
@@ -125,8 +168,12 @@ const CountdownTimer = ({
           onComplete={() => {
             handleComplete();
             setSessionCount((prev) => prev + 1);
+            setSessionsSpent(sessionsSpent + 1);
             setTimerKey((prev) => prev + 1);
             setTimerState(sessionCount + 1 === sessions ? "long" : "short");
+          }}
+          onUpdate={() => {
+            setFocusSpent(focusSpent + 1);
           }}
           size={275}
           rotation="counterclockwise"
@@ -165,6 +212,9 @@ const CountdownTimer = ({
             setTimerKey((prev) => prev + 1);
             setTimerState("focus");
           }}
+          onUpdate={() => {
+            setShortSpent(shortSpent + 1);
+          }}
           size={275}
           rotation="counterclockwise"
           key={timerKey}
@@ -199,6 +249,9 @@ const CountdownTimer = ({
             setTimerKey((prev) => prev + 1);
             setTimerState("focus");
             resetSessions();
+          }}
+          onUpdate={() => {
+            setLongSpent(longSpent + 1);
           }}
           size={275}
           rotation="counterclockwise"

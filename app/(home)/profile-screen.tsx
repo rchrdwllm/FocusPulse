@@ -4,6 +4,8 @@ import * as ImagePicker from "expo-image-picker";
 import { CircleUserRound, Pencil } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -13,29 +15,62 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/server/firebase";
-import { getCurrentUser } from "@/server/user";
+import { getCurrentUser, updateBio, updateOtherDetails } from "@/server/user";
 import { H1, H3, H4 } from "@/components/ui/typography";
 import { Text } from "@/components/ui/text";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useUserBio } from "@/hooks/useUserBio";
+import { useUser } from "@/hooks/useUser";
+import { getAuth } from "firebase/auth";
+import { router } from "expo-router";
+import Analytics from "@/components/analytics/analytics";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const streak = require("@/assets/images/streak.png");
 
 const ProfileScreen: React.FC = () => {
   const {
-    currentColors: { muted, background, foreground, primary },
+    currentColors: { muted, background, foreground, primary, input, border },
   } = useTheme();
   const [image, setImage] = useState<string | null>(null);
   const [streakCount, setStreakCount] = useState(0);
+  const { bio: dbBio } = useUserBio();
   const [bio, setBio] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const currentUser = useUser();
+  const [isSavingChanges, setIsSavingChanges] = useState(false);
+  const [imagePickerLoading, setImagePickerLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.displayName || "");
+      setDisplayName(currentUser.displayName || "");
+      setEmail(currentUser.email || "");
+      setImage(currentUser.photoURL || "");
+      setBio(dbBio?.bio || "");
+    }
+  }, [currentUser, dbBio]);
 
   const pickImage = async () => {
+    setImagePickerLoading(true);
+
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
+
+    setImagePickerLoading(false);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -60,6 +95,35 @@ const ProfileScreen: React.FC = () => {
 
     fetchStreak();
   }, []);
+
+  const handleSaveChanges = async () => {
+    setIsSavingChanges(true);
+
+    await updateBio(bio);
+    const { success, error } = await updateOtherDetails({ name, email, image });
+
+    if (success) {
+      const { name: newName, image: newImage } = success;
+
+      setName(newName);
+      setDisplayName(newName);
+      setImage(newImage);
+    }
+
+    if (error) {
+      Alert.alert("Error", JSON.stringify(error));
+    }
+
+    setIsSavingChanges(false);
+  };
+
+  const handleLogOut = () => {
+    const auth = getAuth();
+
+    auth.signOut().then(() => {
+      router.replace("/(auth)");
+    });
+  };
 
   return (
     <GestureHandlerRootView>
@@ -90,7 +154,7 @@ const ProfileScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
             <View>
-              <H1 className="text-center">Hello, user!</H1>
+              <H1 className="text-center">Hello, {displayName}!</H1>
               <Text
                 className="text-center"
                 style={{
@@ -101,6 +165,13 @@ const ProfileScreen: React.FC = () => {
               </Text>
             </View>
             <Textarea placeholder="Bio" value={bio} onChangeText={setBio} />
+            <Input placeholder="Name" value={name} onChangeText={setName} />
+            <Input
+              placeholder="Email"
+              editable={false}
+              value={email}
+              onChangeText={setEmail}
+            />
             <View
               className="flex-row items-center justify-center gap-4 rounded-3xl px-4 py-8"
               style={{
@@ -115,14 +186,41 @@ const ProfileScreen: React.FC = () => {
                 </Text>
               </View>
             </View>
+            <Analytics />
+            <View className="gap-4 mt-12">
+              <Button
+                className="border"
+                style={{
+                  backgroundColor: input,
+                  borderColor: border,
+                }}
+                onPress={handleLogOut}
+              >
+                <Text>Log out</Text>
+              </Button>
+              <Button onPress={handleSaveChanges}>
+                <Text style={{ color: "white" }}>Save changes</Text>
+              </Button>
+            </View>
           </View>
         </ScrollView>
-        <View className="px-4 py-8">
-          <Button>
-            <Text>Save changes</Text>
-          </Button>
-        </View>
       </SafeAreaWrapper>
+      <AlertDialog open={isSavingChanges}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Saving changes</AlertDialogTitle>
+          </AlertDialogHeader>
+          <ActivityIndicator className="text-primary" />
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={imagePickerLoading}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Opening image picker</AlertDialogTitle>
+          </AlertDialogHeader>
+          <ActivityIndicator className="text-primary" />
+        </AlertDialogContent>
+      </AlertDialog>
     </GestureHandlerRootView>
   );
 };
