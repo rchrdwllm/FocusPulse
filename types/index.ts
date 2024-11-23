@@ -31,3 +31,18 @@ export type SessionPreset = {
   long: number;
   sessions: number;
 };
+
+export type UserBio = {
+  bio: string;
+  id: string;
+};
+
+export type Analytics = {
+  id: string;
+  focus: number;
+  short: number;
+  long: number;
+  sessions: number;
+  userId: string;
+  lastUpdated: Timestamp;
+};
