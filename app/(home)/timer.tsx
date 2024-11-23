@@ -252,7 +252,7 @@ const NewTimerScreen = () => {
             </View>
           </ScrollView>
         </Animated.View>
-        <View style={{ backgroundColor: background }} className="p-4">
+        <View style={{ backgroundColor: background }} className="px-4 pt-4">
           <Button onPress={handleSubmit}>
             <Text style={{ color: "#ffffff" }}>Start</Text>
           </Button>

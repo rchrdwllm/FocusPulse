@@ -9,7 +9,8 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { CircleCheck, Palette, Timer } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
-import { StatusBar, Text, View } from "react-native";
+import { StatusBar, View } from "react-native";
+import { Text } from "@/components/ui/text";
 import { GestureHandlerRootView, Switch } from "react-native-gesture-handler";
 
 type Theme = "light" | "dark" | "system";
@@ -29,7 +30,7 @@ const SettingsScreen = () => {
   const { foreground, primary, muted, background } = currentColors;
 
   useEffect(() => {
-    StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content");
+    // StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content");
   }, [theme, currentColors]);
 
   if (error) throw new Error(error.message);
@@ -103,7 +104,7 @@ const SettingsScreen = () => {
                 />
               </View>
             </View>
-            <View className="mt-4">
+            {/* <View className="mt-4">
               <View className="flex-row items-center gap-2 mb-2">
                 <CircleCheck size={20} color={foreground} />
                 <Text
@@ -134,7 +135,7 @@ const SettingsScreen = () => {
                   thumbColor={"white"}
                 />
               </View>
-            </View>
+            </View> */}
             <View className="flex-row items-center gap-2 mb-2">
               <Palette size={20} color={foreground} />
               <Text
@@ -142,9 +143,6 @@ const SettingsScreen = () => {
               >
                 Theme
               </Text>
-            </View>
-            <View className="flex-row justify-between items-center mb-4">
-              <Text style={{ color: foreground }}>App Theme</Text>
             </View>
             <View className="flex-row items-center gap-2 mb-2">
               <Picker
@@ -157,9 +155,9 @@ const SettingsScreen = () => {
                 }}
                 itemStyle={{ backgroundColor: background }}
               >
-                <Picker.Item label="System" value="system" color={foreground} />
-                <Picker.Item label="Light" value="light" color={foreground} />
-                <Picker.Item label="Dark" value="dark" color={foreground} />
+                <Picker.Item label="System" value="system" />
+                <Picker.Item label="Light" value="light" />
+                <Picker.Item label="Dark" value="dark" />
               </Picker>
             </View>
           </View>
