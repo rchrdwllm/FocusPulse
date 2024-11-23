@@ -1,7 +1,27 @@
-import { ThemeProvider, useTheme } from "@/components/theme/theme-context";
+import Analytics from "@/components/analytics/analytics";
+import { useTheme } from "@/components/theme/theme-context";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import SafeAreaWrapper from "@/components/ui/safe-area-wrapper";
+import { Text } from "@/components/ui/text";
+import { Textarea } from "@/components/ui/textarea";
+import { H1, H4 } from "@/components/ui/typography";
+import { useUser } from "@/hooks/useUser";
+import { useUserBio } from "@/hooks/useUserBio";
+import { db } from "@/server/firebase";
+import { getCurrentUser, updateBio, updateOtherDetails } from "@/server/user";
 import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { CircleUserRound, Pencil } from "lucide-react-native";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -13,25 +33,6 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/server/firebase";
-import { getCurrentUser, updateBio, updateOtherDetails } from "@/server/user";
-import { H1, H3, H4 } from "@/components/ui/typography";
-import { Text } from "@/components/ui/text";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useUserBio } from "@/hooks/useUserBio";
-import { useUser } from "@/hooks/useUser";
-import { getAuth } from "firebase/auth";
-import { router } from "expo-router";
-import Analytics from "@/components/analytics/analytics";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 const streak = require("@/assets/images/streak.png");
 
@@ -89,7 +90,20 @@ const ProfileScreen: React.FC = () => {
 
       if (streakDoc.exists()) {
         const streakData = streakDoc.data();
-        setStreakCount(streakData.streakCount);
+
+        // Parse Firestore's custom formatted date
+        const lastCompletedDate = moment(
+          streakData.lastCompletedDate,
+          "MMMM DD, YYYY [at] hh:mm:ss A [UTC]Z"
+        );
+        const today = moment().tz("UTC");
+
+        // Check if last completed date is today
+        if (lastCompletedDate.isSame(today, "day")) {
+          setStreakCount(streakData.streakCount);
+        } else {
+          setStreakCount(0); // Reset streak if the day doesn't match
+        }
       }
     };
 
@@ -178,14 +192,23 @@ const ProfileScreen: React.FC = () => {
                 backgroundColor: primary,
               }}
             >
-              <Image source={streak} style={styles.streakIcon} />
+              <Image
+                source={streakCount >= 10 ? streak : streak}
+                style={[
+                  styles.streakIcon,
+                  streakCount === 0 && { opacity: 0.5 },
+                ]}
+              />
               <View>
                 <H4 style={{ color: "white" }}>Keep your streak going!</H4>
                 <Text style={{ color: "white" }}>
-                  {streakCount} days and counting
+                  {streakCount === 0
+                    ? "Streak reset! Start again!"
+                    : `${streakCount} days and counting`}
                 </Text>
               </View>
             </View>
+
             <Analytics />
             <View className="gap-4 mt-12">
               <Button
@@ -204,33 +227,28 @@ const ProfileScreen: React.FC = () => {
             </View>
           </View>
         </ScrollView>
+        <AlertDialog open={isSavingChanges}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Saving changes</AlertDialogTitle>
+            </AlertDialogHeader>
+            <ActivityIndicator className="text-primary" />
+          </AlertDialogContent>
+        </AlertDialog>
+        <AlertDialog open={imagePickerLoading}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Opening image picker</AlertDialogTitle>
+            </AlertDialogHeader>
+            <ActivityIndicator className="text-primary" />
+          </AlertDialogContent>
+        </AlertDialog>
       </SafeAreaWrapper>
-      <AlertDialog open={isSavingChanges}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Saving changes</AlertDialogTitle>
-          </AlertDialogHeader>
-          <ActivityIndicator className="text-primary" />
-        </AlertDialogContent>
-      </AlertDialog>
-      <AlertDialog open={imagePickerLoading}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Opening image picker</AlertDialogTitle>
-          </AlertDialogHeader>
-          <ActivityIndicator className="text-primary" />
-        </AlertDialogContent>
-      </AlertDialog>
     </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   iconContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -253,38 +271,6 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     objectFit: "contain",
-  },
-  bio: {
-    width: 390,
-    height: 156,
-    backgroundColor: "#BFBED8",
-    marginTop: 20,
-    borderRadius: 35,
-    padding: 15,
-  },
-  bioText: {
-    position: "absolute",
-    top: 15,
-    left: 20,
-    color: "#000000",
-    fontSize: 16,
-    maxWidth: "100%",
-  },
-  placeholder: {
-    width: 390,
-    height: 400,
-    backgroundColor: "#BFBED8",
-    marginTop: 20,
-    borderRadius: 35,
-    padding: 15,
-  },
-  placeholderText: {
-    position: "absolute",
-    top: 15,
-    left: 20,
-    color: "#000000",
-    fontSize: 16,
-    maxWidth: "100%",
   },
 });
 
