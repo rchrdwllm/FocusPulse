@@ -9,7 +9,7 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Analytics = () => {
   const {
-    currentColors: { muted, border },
+    currentColors: { muted, border, input },
   } = useTheme();
   const { analytics, loading } = useAnalytics();
   const [formattedAnalytics, setFormattedAnalytics] = useState({
@@ -35,7 +35,10 @@ const Analytics = () => {
   if (!analytics) return null;
 
   return (
-    <Grid className="border rounded-3xl" style={{ borderColor: border }}>
+    <Grid
+      className="border rounded-3xl"
+      style={{ borderColor: border, backgroundColor: input }}
+    >
       <Col>
         <View className="gap-4 py-4">
           <Text className="text-center text-base" style={{ color: muted }}>
