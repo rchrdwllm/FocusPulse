@@ -1,6 +1,4 @@
-// File: streak.js (or relevant file)
 
-// Import necessary Firebase modules
 import { db } from "@/server/firebase";
 import {
   collection,
