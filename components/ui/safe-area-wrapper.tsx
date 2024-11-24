@@ -16,7 +16,10 @@ const SafeAreaWrapper = ({
 
   return (
     <View
-      style={{ paddingTop: Platform.OS === "android" ? top : 28, ...style }}
+      style={{
+        paddingTop: Platform.OS === "android" ? top - 20 : 28,
+        ...style,
+      }}
       className={cn("flex-1", className)}
     >
       {children}

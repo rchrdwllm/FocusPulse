@@ -15,6 +15,7 @@ import { useTheme } from "../theme/theme-context";
 import Sessions from "./sessions";
 import { useDebounce } from "@uidotdev/usehooks";
 import { updateAnalytics } from "@/server/analytics";
+import { updateStreak } from "@/server/streak";
 
 type CountdownTimerProps = {
   focusDuration: number;
@@ -55,6 +56,10 @@ const CountdownTimer = ({
   const [longSpent, setLongSpent] = useState(0);
   const debouncedLong = useDebounce(longSpent, 5000);
   const [sessionsSpent, setSessionsSpent] = useState(0);
+
+  useEffect(() => {
+    setTimerState("focus");
+  }, [sessions]);
 
   const resetSessions = () => {
     setSessionArr(createSessions(sessions));
@@ -146,8 +151,16 @@ const CountdownTimer = ({
     sessions,
   ]);
 
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [settings]);
+
   const handleComplete = async () => {
-    await incrementTaskSessions(currentTask.id);
+    if (currentTask) {
+      await incrementTaskSessions(currentTask.id);
+    }
+
+    await updateStreak();
   };
 
   return (

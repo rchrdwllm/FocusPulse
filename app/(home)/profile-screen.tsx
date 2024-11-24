@@ -14,14 +14,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { H1, H4 } from "@/components/ui/typography";
 import { useUser } from "@/hooks/useUser";
 import { useUserBio } from "@/hooks/useUserBio";
-import { db } from "@/server/firebase";
-import { getCurrentUser, updateBio, updateOtherDetails } from "@/server/user";
+import { updateBio, updateOtherDetails } from "@/server/user";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
 import { CircleUserRound, Pencil } from "lucide-react-native";
-import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -33,15 +30,13 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-const streak = require("@/assets/images/streak.png");
+import Streak from "@/components/streak/streak";
 
 const ProfileScreen: React.FC = () => {
   const {
-    currentColors: { muted, background, foreground, primary, input, border },
+    currentColors: { muted, background, foreground, input, border },
   } = useTheme();
   const [image, setImage] = useState<string | null>(null);
-  const [streakCount, setStreakCount] = useState(0);
   const { bio: dbBio } = useUserBio();
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
@@ -77,38 +72,6 @@ const ProfileScreen: React.FC = () => {
       setImage(result.assets[0].uri);
     }
   };
-
-  useEffect(() => {
-    const fetchStreak = async () => {
-      const currentUser = getCurrentUser();
-      if (!currentUser) {
-        return;
-      }
-
-      const streakRef = doc(db, "streaks", currentUser.uid);
-      const streakDoc = await getDoc(streakRef);
-
-      if (streakDoc.exists()) {
-        const streakData = streakDoc.data();
-
-        // Parse Firestore's custom formatted date
-        const lastCompletedDate = moment(
-          streakData.lastCompletedDate,
-          "MMMM DD, YYYY [at] hh:mm:ss A [UTC]Z"
-        );
-        const today = moment().tz("UTC");
-
-        // Check if last completed date is today
-        if (lastCompletedDate.isSame(today, "day")) {
-          setStreakCount(streakData.streakCount);
-        } else {
-          setStreakCount(0); // Reset streak if the day doesn't match
-        }
-      }
-    };
-
-    fetchStreak();
-  }, []);
 
   const handleSaveChanges = async () => {
     setIsSavingChanges(true);
@@ -186,29 +149,7 @@ const ProfileScreen: React.FC = () => {
               value={email}
               onChangeText={setEmail}
             />
-            <View
-              className="flex-row items-center justify-center gap-4 rounded-3xl px-4 py-8"
-              style={{
-                backgroundColor: primary,
-              }}
-            >
-              <Image
-                source={streakCount >= 10 ? streak : streak}
-                style={[
-                  styles.streakIcon,
-                  streakCount === 0 && { opacity: 0.5 },
-                ]}
-              />
-              <View>
-                <H4 style={{ color: "white" }}>Keep your streak going!</H4>
-                <Text style={{ color: "white" }}>
-                  {streakCount === 0
-                    ? "Streak reset! Start again!"
-                    : `${streakCount} days and counting`}
-                </Text>
-              </View>
-            </View>
-
+            <Streak />
             <Analytics />
             <View className="gap-4 mt-12">
               <Button
@@ -266,11 +207,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-  },
-  streakIcon: {
-    width: 55,
-    height: 55,
-    objectFit: "contain",
   },
 });
 

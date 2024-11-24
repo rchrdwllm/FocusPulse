@@ -46,3 +46,9 @@ export type Analytics = {
   userId: string;
   lastUpdated: Timestamp;
 };
+
+export type Streak = {
+  id: string;
+  lastCompletedDate: string;
+  streakCount: number;
+};

@@ -155,9 +155,9 @@ const SettingsScreen = () => {
                 }}
                 itemStyle={{ backgroundColor: background }}
               >
-                <Picker.Item label="System" value="system" />
-                <Picker.Item label="Light" value="light" />
-                <Picker.Item label="Dark" value="dark" />
+                <Picker.Item label="System" value="system" color={foreground} />
+                <Picker.Item label="Light" value="light" color={foreground} />
+                <Picker.Item label="Dark" value="dark" color={foreground} />
               </Picker>
             </View>
           </View>

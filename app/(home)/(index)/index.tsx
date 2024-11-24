@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { initUserSettings } from "@/server/settings";
 import { initAnalytics } from "@/server/analytics";
+import { initStreakReset } from "@/server/streak";
 
 const HomeScreen = () => {
   const { focusDuration, shortDuration, longDuration, newTimerKey, sessions } =
@@ -28,6 +29,7 @@ const HomeScreen = () => {
   useEffect(() => {
     initUserSettings();
     initAnalytics();
+    initStreakReset();
   }, []);
 
   useEffect(() => {
