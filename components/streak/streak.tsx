@@ -31,9 +31,7 @@ const Streak = () => {
           }}
         />
         <View>
-          <H4 style={{ color: "white" }} className="text-center">
-            No streak yet
-          </H4>
+          <H4 className="text-center">No streak yet</H4>
           <Text style={{ color: muted }} className="text-center text-base">
             Complete at least 1 session per day to start a streak
           </Text>
@@ -58,9 +56,7 @@ const Streak = () => {
           }}
         />
         <View>
-          <H4 style={{ color: "white" }} className="text-center">
-            No streak yet
-          </H4>
+          <H4 className="text-center">No streak yet</H4>
           <Text style={{ color: muted }} className="text-center text-base">
             Complete at least 1 session per day to start a streak
           </Text>
